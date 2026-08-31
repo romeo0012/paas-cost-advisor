@@ -1,0 +1,270 @@
+{
+  "aws": {
+    "name": "AWS",
+    "region": "us-east-1",
+    "pricingSource": "auto",
+    "plans": [
+      {
+        "name": "AWS IaaS (Start)",
+        "note": "t3.micro + 20 GB EBS gp3",
+        "tierId": "IaaS-Start",
+        "pricePerMonth": 211.42,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "AWS IaaS (Standard)",
+        "note": "t3.medium + 40 GB EBS gp3",
+        "tierId": "IaaS-Standard",
+        "pricePerMonth": 772.06,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "AWS IaaS (Premium)",
+        "note": "t3.xlarge + 60 GB EBS gp3",
+        "tierId": "IaaS-Premium",
+        "pricePerMonth": 2904.26,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "AWS IaaS (Enterprise)",
+        "note": "t3.2xlarge + 120 GB EBS gp3",
+        "tierId": "IaaS-Enterprise",
+        "pricePerMonth": 5808.51,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "AWS PaaS (Start)",
+        "note": "EB t3.micro + ALB",
+        "tierId": "PaaS-Start",
+        "pricePerMonth": 552.51,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "AWS PaaS (Standard)",
+        "note": "EB t3.medium + ALB",
+        "tierId": "PaaS-Standard",
+        "pricePerMonth": 1076.35,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "AWS PaaS (Premium)",
+        "note": "EB t3.xlarge + ALB",
+        "tierId": "PaaS-Premium",
+        "pricePerMonth": 3171.75,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "AWS PaaS (Enterprise)",
+        "note": "EB t3.2xlarge + ALB",
+        "tierId": "PaaS-Enterprise",
+        "pricePerMonth": 5965.6,
+        "currency": "CZK",
+        "active": true
+      }
+    ]
+  },
+  "gcp": {
+    "name": "GCP",
+    "region": "us-central1",
+    "pricingSource": "auto",
+    "plans": [
+      {
+        "name": "GCP IaaS (Start)",
+        "note": "e2-micro + 20 GB pd-ssd",
+        "tierId": "IaaS-Start",
+        "pricePerMonth": 220.92,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "GCP IaaS (Standard)",
+        "note": "e2-medium + 40 GB pd-ssd",
+        "tierId": "IaaS-Standard",
+        "pricePerMonth": 718.87,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "GCP IaaS (Premium)",
+        "note": "e2-standard-2 + 60 GB pd-ssd",
+        "tierId": "IaaS-Premium",
+        "pricePerMonth": 1359.53,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "GCP IaaS (Enterprise)",
+        "note": "e2-standard-4 + 120 GB pd-ssd",
+        "tierId": "IaaS-Enterprise",
+        "pricePerMonth": 2719.06,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "GCP PaaS (Start)",
+        "note": "App Engine F1 730h",
+        "tierId": "PaaS-Start",
+        "pricePerMonth": 839.5,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "GCP PaaS (Standard)",
+        "note": "App Engine F2 730h",
+        "tierId": "PaaS-Standard",
+        "pricePerMonth": 1679,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "GCP PaaS (Premium)",
+        "note": "App Engine F4 730h",
+        "tierId": "PaaS-Premium",
+        "pricePerMonth": 3358,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "GCP PaaS (Enterprise)",
+        "note": "App Engine F4_1G 730h",
+        "tierId": "PaaS-Enterprise",
+        "pricePerMonth": 6716,
+        "currency": "CZK",
+        "active": true
+      }
+    ]
+  },
+  "azure": {
+    "name": "Azure",
+    "region": "eastus",
+    "pricingSource": "auto",
+    "plans": [
+      {
+        "name": "Azure IaaS (Start)",
+        "note": "B1s + 20 GB SSD managed",
+        "tierId": "IaaS-Start",
+        "pricePerMonth": 271.86,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "Azure IaaS (Standard)",
+        "note": "B2s + 40 GB SSD managed",
+        "tierId": "IaaS-Standard",
+        "pricePerMonth": 772.06,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "Azure IaaS (Premium)",
+        "note": "B4als_v2 + 60 GB SSD managed",
+        "tierId": "IaaS-Premium",
+        "pricePerMonth": 2662.48,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "Azure IaaS (Enterprise)",
+        "note": "B8als_v2 + 120 GB SSD managed",
+        "tierId": "IaaS-Enterprise",
+        "pricePerMonth": 5308.17,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "Azure PaaS (Start)",
+        "note": "App Service B1 Windows",
+        "tierId": "PaaS-Start",
+        "pricePerMonth": 285.43,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "Azure PaaS (Standard)",
+        "note": "App Service B2 Windows",
+        "tierId": "PaaS-Standard",
+        "pricePerMonth": 2518.5,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "Azure PaaS (Premium)",
+        "note": "App Service B3 Windows",
+        "tierId": "PaaS-Premium",
+        "pricePerMonth": 5037,
+        "currency": "CZK",
+        "active": true
+      },
+      {
+        "name": "Azure PaaS (Enterprise)",
+        "note": "App Service 2xB3",
+        "tierId": "PaaS-Enterprise",
+        "pricePerMonth": 10074,
+        "currency": "CZK",
+        "active": true
+      }
+    ]
+  },
+  "tcloud": {
+    "name": "T-Cloud",
+    "region": "Czech Republic",
+    "pricingSource": "manual",
+    "plans": [
+      {
+        "name": "T-Cloud IaaS (Start)",
+        "tierId": "iaas-start",
+        "pricePerMonth": 157,
+        "currency": "CZK"
+      },
+      {
+        "name": "T-Cloud IaaS (Standard)",
+        "tierId": "iaas-standard",
+        "pricePerMonth": 597,
+        "currency": "CZK"
+      },
+      {
+        "name": "T-Cloud IaaS (Premium)",
+        "tierId": "iaas-premium",
+        "pricePerMonth": 795,
+        "currency": "CZK"
+      },
+      {
+        "name": "T-Cloud IaaS (Enterprise)",
+        "tierId": "iaas-enterprise",
+        "pricePerMonth": 1590,
+        "currency": "CZK"
+      },
+      {
+        "name": "T-Cloud PaaS (Start)",
+        "tierId": "paas-start",
+        "pricePerMonth": 1059,
+        "currency": "CZK"
+      },
+      {
+        "name": "T-Cloud PaaS (Standard)",
+        "tierId": "paas-standard",
+        "pricePerMonth": 4516,
+        "currency": "CZK"
+      },
+      {
+        "name": "T-Cloud PaaS (Premium)",
+        "tierId": "paas-premium",
+        "pricePerMonth": 8922,
+        "currency": "CZK"
+      },
+      {
+        "name": "T-Cloud PaaS (Enterprise)",
+        "tierId": "paas-enterprise",
+        "pricePerMonth": 17476,
+        "currency": "CZK"
+      }
+    ]
+  }
+}

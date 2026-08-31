@@ -1,0 +1,94 @@
+header { text-align: center; padding: 1.5rem 1rem; }
+.admin-flags { display: inline-flex; gap: 6px; margin-bottom: 0.5rem; }
+header h1 { font-size: 1.5rem; }
+header nav { margin-top: 0.5rem; }
+header nav a { color: #0070f3; text-decoration: none; font-size: 0.9rem; }
+header nav a:hover { text-decoration: underline; }
+
+.toolbar { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.toolbar select { padding: 0.4rem 0.6rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; min-width: 200px; }
+.toolbar button { padding: 0.4rem 1rem; background: #0070f3; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
+.toolbar button:hover { background: #005bb5; }
+.toolbar button#addProviderBtn { background: #38a169; }
+.toolbar button#addProviderBtn:hover { background: #2f855a; }
+
+.card h2 { margin-bottom: 0.75rem; font-size: 1.1rem; }
+#plansList { display: flex; flex-direction: column; gap: 0.75rem; }
+#plansSection { margin-bottom: 1.5rem; }
+
+.plan-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fafbfc;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.plan-fields {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.5rem;
+}
+
+.plan-fields label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #555;
+  gap: 2px;
+}
+
+.plan-fields input,
+.plan-fields select {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.plan-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.plan-actions button {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.plan-actions .btn-save { border-color: #38a169; color: #38a169; }
+.plan-actions .btn-save:hover { background: #38a169; color: #fff; }
+.plan-actions .btn-delete { border-color: #e53e3e; color: #e53e3e; }
+.plan-actions .btn-delete:hover { background: #e53e3e; color: #fff; }
+
+.empty { color: #999; font-style: italic; padding: 1rem; }
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 0.75rem 1.25rem;
+  background: #38a169;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+.toast.visible { opacity: 1; transform: translateY(0); }
+.toast--err { background: #e53e3e; }

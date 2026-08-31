@@ -1,0 +1,7 @@
+# Runtime environment variables (CodeNOW) - mirror of the local setup.
+# PORT=3000 odpovida nasazenemu runtime portu (viz .codenow.yaml runtime.port).
+# BASE_PATH=/paascostadvisor prepinac reverse proxy (nginx) - slouzi pod /paascostadvisor/.
+# Zadne dalsi env promenne (klic/API klic) tato aplikace nepouziva.
+
+PORT=3000
+BASE_PATH=/paascostadvisor

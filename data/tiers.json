@@ -1,0 +1,66 @@
+[
+  {
+    "id": "IaaS-Start",
+    "category": "IaaS",
+    "name": "Start",
+    "cpu": "1 vCPU",
+    "ram": "2 GB",
+    "storage": "20 GB SSD"
+  },
+  {
+    "id": "IaaS-Standard",
+    "category": "IaaS",
+    "name": "Standard",
+    "cpu": "2 vCPU",
+    "ram": "4 GB",
+    "storage": "40 GB SSD"
+  },
+  {
+    "id": "IaaS-Premium",
+    "category": "IaaS",
+    "name": "Premium",
+    "cpu": "4 vCPU",
+    "ram": "8 GB",
+    "storage": "60 GB SSD"
+  },
+  {
+    "id": "IaaS-Enterprise",
+    "category": "IaaS",
+    "name": "Enterprise",
+    "cpu": "8 vCPU",
+    "ram": "16 GB",
+    "storage": "120 GB SSD"
+  },
+  {
+    "id": "PaaS-Start",
+    "category": "PaaS",
+    "name": "Start",
+    "cpu": "1 vCPU",
+    "ram": "2 GB",
+    "storage": "20 GB SSD"
+  },
+  {
+    "id": "PaaS-Standard",
+    "category": "PaaS",
+    "name": "Standard",
+    "cpu": "2 vCPU",
+    "ram": "4 GB",
+    "storage": "40 GB SSD"
+  },
+  {
+    "id": "PaaS-Premium",
+    "category": "PaaS",
+    "name": "Premium",
+    "cpu": "4 vCPU",
+    "ram": "8 GB",
+    "storage": "60 GB SSD"
+  },
+  {
+    "id": "PaaS-Enterprise",
+    "category": "PaaS",
+    "name": "Enterprise",
+    "cpu": "8 vCPU",
+    "ram": "16 GB",
+    "storage": "120 GB SSD"
+  }
+]

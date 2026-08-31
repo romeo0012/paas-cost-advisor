@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="title">PaaS Cost Advisor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <div class="flags">
+        <button class="flag-btn flag-cz" data-lang="cs" title="Česky" aria-pressed="true"></button>
+        <button class="flag-btn flag-en" data-lang="en" title="English" aria-pressed="false"></button>
+      </div>
+    </header>
+    <h1>PaaS Cost Advisor</h1>
+    <p><span data-i18n="subtitle">Porovnej ceny PaaS řešení napříč poskytovateli</span> &nbsp; <a href="admin" class="admin-link" data-i18n="adminLink">Správa →</a></p>
+
+    <section class="controls">
+      <label><span data-i18n="maxBudget">Maximální měsíční rozpočet:</span>
+        <input type="number" id="budget" value="20000" min="0" step="100">
+      </label>
+      <label><span data-i18n="currency">Měna:</span>
+        <select id="currency">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="CZK" selected>CZK</option>
+        </select>
+      </label>
+      <button onclick="fetchAdvice()" data-i18n="compare">Porovnat</button>
+    </section>
+
+    <section class="selection-toolbar" id="selectionToolbar" style="display:none">
+      <label><input type="checkbox" id="showSelectedOnly"> <span data-i18n="showSelectedOnly">Zobrazit pouze vybrané</span></label>
+      <button id="selectAllBtn" data-i18n="selectAll">Vybrat vše</button>
+      <button id="deselectAllBtn" data-i18n="deselectAll">Odznačit vše</button>
+      <span id="selectionCount" class="sel-count"></span>
+      <span id="totalCost" class="total-cost"></span>
+    </section>
+
+    <section class="providers" id="providers"></section>
+
+    <footer class="sources">
+      <h3 data-i18n="sources">Zdroje a metodika</h3>
+      <table>
+        <tr><th data-i18n="provider">Poskytovatel</th><th data-i18n="iaasBasedOn">IaaS vychází z</th><th data-i18n="paasBasedOn">PaaS vychází z</th></tr>
+        <tr>
+          <td><strong>AWS</strong></td>
+          <td><span data-i18n="awsIaas">EC2 T3 on-demand + EBS gp3 (us-east-1)</span><br><a href="https://aws.amazon.com/ec2/pricing/on-demand/" target="_blank">aws.amazon.com/ec2/pricing</a></td>
+          <td><span data-i18n="awsPaas">Elastic Beanstalk (EC2 + ALB, bez poplatku za EB)</span><br><a href="https://aws.amazon.com/elasticbeanstalk/pricing/" target="_blank">aws.amazon.com/elasticbeanstalk/pricing</a></td>
+        </tr>
+        <tr>
+          <td><strong>GCP</strong></td>
+          <td><span data-i18n="gcpIaas">Compute Engine E2 on-demand + pd-ssd (us-central1)</span><br><a href="https://cloud.google.com/compute/pricing" target="_blank">cloud.google.com/compute/pricing</a></td>
+          <td><span data-i18n="gcpPaas">App Engine Standard F1–F4 (730 h/měs, scale-to-zero nezapočítán)</span><br><a href="https://cloud.google.com/appengine/pricing" target="_blank">cloud.google.com/appengine/pricing</a></td>
+        </tr>
+        <tr>
+          <td><strong>Azure</strong></td>
+          <td><span data-i18n="azureIaas">B-series VMs on-demand + managed disk (eastus)</span><br><a href="https://azure.microsoft.com/cs-cz/pricing/details/virtual-machines/" target="_blank">azure.microsoft.com/pricing/vm</a></td>
+          <td><span data-i18n="azurePaas">App Service Basic B1–B3 (Windows, pay-as-you-go)</span><br><a href="https://azure.microsoft.com/cs-cz/pricing/details/app-service/windows/" target="_blank">azure.microsoft.com/pricing/app-service</a></td>
+        </tr>
+        <tr>
+          <td><strong>T-Cloud</strong></td>
+          <td colspan="2"><span data-i18n="tcloudPrices">Ceny poskytnuté T-Mobile CZ (T-Cloud IaaS a PaaS ceník)</span></td>
+        </tr>
+      </table>
+      <p class="method-note">
+        <strong data-i18n="notes">Poznámky:</strong>
+        <br><span data-i18n="noteRates">Převodní kurzy: 1 USD = 23 CZK, 1 USD = 0,92 EUR, 1 EUR = 25 CZK.</span>
+        <br><span data-i18n="noteRound">U AWS/GCP/Azure jsou ceny zaokrouhleny, zahrnují compute + storage.</span>
+        <br><span data-i18n="noteGcp">GCP IaaS Start (e2-micro) má sdílené jádro — výkonově není srovnatelný s dedikovaným 1 vCPU.</span>
+        <br><span data-i18n="noteAppEngine">App Engine ceny předpokládají 730 h/měs běhu (neškálují se do nuly).</span>
+        <br><span data-i18n="noteAzure">Azure App Service jsou uvedeny za Windows ceny (Linux je levnější).</span>
+        <br><span data-i18n="noteDiscl">Ceny jsou orientační, vždy ověřte v oficiální kalkulačce providera.</span>
+      </p>
+    </footer>
+  </div>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="i18n.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

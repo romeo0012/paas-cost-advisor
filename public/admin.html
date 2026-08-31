@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PaaS Cost Advisor – Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header>
+    <div class="admin-flags">
+      <button class="flag-btn flag-cz" data-lang="cs" title="Česky" aria-pressed="true"></button>
+      <button class="flag-btn flag-en" data-lang="en" title="English" aria-pressed="false"></button>
+    </div>
+    <h1>PaaS Cost Advisor – <span data-i18n="adminTitle">Správa</span></h1>
+    <nav><a href="." data-i18n="backToCompare">← Zpět na srovnání</a></nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="toolbar">
+        <select id="adminProvider"></select>
+        <button id="addProviderBtn" data-i18n="addProvider">+ Přidat providera</button>
+        <button id="saveProviderBtn" data-i18n="saveProvider">Uložit providera</button>
+        <button id="refreshPricesBtn" class="btn-refresh" data-i18n="refreshCloud">🔄 Obnovit ceny z cloudu</button>
+      </div>
+    </section>
+
+    <section class="card" id="plansSection">
+      <h2 data-i18n="plans">Plány</h2>
+      <div class="toolbar">
+        <button id="addPlanBtn" data-i18n="addPlan">+ Přidat plán</button>
+      </div>
+      <div id="plansList"></div>
+    </section>
+
+    <section class="card" id="tiersSection">
+      <h2 data-i18n="tiers">Tiers</h2>
+      <div class="toolbar">
+        <button id="addTierBtn" data-i18n="addTier">+ Přidat tier</button>
+      </div>
+      <div id="tiersList"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="i18n.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
