@@ -4,6 +4,7 @@
   "description": "PaaS cost advisor - compare pricing across AWS, GCP, Azure, and T-Cloud",
   "main": "server.js",
   "scripts": {
+    "build": "echo \"No build step required\"; exit 0",
     "start": "node server.js"
   },
   "dependencies": {
