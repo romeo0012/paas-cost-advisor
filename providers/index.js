@@ -52,16 +52,29 @@ function addInstances(plans, maxBudget) {
   }))
 }
 
+function isPaasTier(tierId) {
+  const t = loadTiers().find(x => x.id.toLowerCase() === String(tierId || '').toLowerCase())
+  return t ? t.category === 'PaaS' : /^paas[\s-]/i.test(String(tierId || ''))
+}
+
 function getAdvice(requirements) {
   const db = loadData()
   const targetCurrency = requirements.currency || 'CZK'
   const maxBudget = requirements.maxBudget || Infinity
+  const utilizationPct = requirements.utilizationPct != null ? Number(requirements.utilizationPct) : (Number(process.env.PAAS_UTILIZATION) || 40)
+  const utilFactor = utilizationPct / 100
   const results = []
   for (const [key, prov] of Object.entries(db)) {
     const res = {
       provider: prov.name,
       region: prov.region,
-      plans: prov.plans.filter(p => p.active !== false).map(p => mergeTierSpecs({ ...p, provider: prov.name })),
+      plans: prov.plans.filter(p => p.active !== false).map(p => {
+        const plan = mergeTierSpecs({ ...p, provider: prov.name })
+        if (isPaasTier(plan.tierId) && plan.pricePerMonth != null) {
+          plan.pricePerMonth = plan.pricePerMonth * utilFactor
+        }
+        return plan
+      }),
       recommendations: [],
     }
     res.plans = addInstances(convertPlans(res.plans, targetCurrency), maxBudget)

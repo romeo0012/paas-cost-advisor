@@ -8,6 +8,7 @@ const BASE_PATH = process.env.BASE_PATH || ''
 const { getAllPlans, getAdvice, listProviders, updatePlan, addPlan, deletePlan, updateProvider, listTiers, updateTier, addTier, deleteTier } = require('./providers')
 const { refreshProviderPrices } = require('./lib/pricing')
 const port = process.env.PORT || 3000
+const PAAS_UTILIZATION = Number(process.env.PAAS_UTILIZATION) || 40
 
 const io = require('socket.io')(http, {
   path: BASE_PATH + '/socket.io',
@@ -24,7 +25,7 @@ app.use(BASE_PATH, (req, res, next) => {
   fs.readFile(filePath, 'utf-8', (err, html) => {
     if (err) return next()
     const baseTag = BASE_PATH ? `<base href="${BASE_PATH}/">` : ''
-    const script = `<script>window.BASE_PATH=${JSON.stringify(BASE_PATH)};</script>`
+    const script = `<script>window.BASE_PATH=${JSON.stringify(BASE_PATH)};window.PAAS_UTILIZATION=${JSON.stringify(PAAS_UTILIZATION)};</script>`
     res.send(html.replace('</head>', baseTag + script + '</head>'))
   })
 })

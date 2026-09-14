@@ -5,3 +5,5 @@
 
 PORT=3000
 BASE_PATH=
+# Vychozi vyuziti PaaS v % pro prepočet ceny (20/40/60/80/100)
+PAAS_UTILIZATION=40

@@ -1,4 +1,5 @@
 const BP = window.BASE_PATH || ''
+const DEFAULT_UTILIZATION = Number(window.PAAS_UTILIZATION) || 40
 const socket = io({ path: BP + '/socket.io' })
 const selected = new Set()
 let tiers = []
@@ -13,9 +14,10 @@ async function loadTiers() {
 function fetchAdvice() {
   const budget = document.getElementById('budget').value
   const currency = document.getElementById('currency').value
+  const utilization = document.getElementById('utilization').value
   lastBudget = budget ? Number(budget) : Infinity
   lastCurrency = currency
-  socket.emit('getAdvice', { maxBudget: lastBudget, currency }, (results) => {
+  socket.emit('getAdvice', { maxBudget: lastBudget, currency, utilizationPct: Number(utilization) || DEFAULT_UTILIZATION }, (results) => {
     renderResults(results, currency)
   })
 }
@@ -245,6 +247,8 @@ document.getElementById('deselectAllBtn').addEventListener('click', () => {
 })
 
 document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('utilization').value = String(DEFAULT_UTILIZATION)
+  document.getElementById('utilization').addEventListener('change', fetchAdvice)
   await loadTiers()
   fetchAdvice()
 })
