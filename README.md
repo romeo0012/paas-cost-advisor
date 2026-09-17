@@ -84,7 +84,26 @@ Ceny plánů jsou v `data/providers.json` (měna CZK); specifikace tierů v `dat
 
 Zdroj: `data/instances.json`. Páruje se nejlevnější vyhovující instance (on-demand, ceny USD/hod). Web i README sekce „Zdroje a metodika“ zobrazují **měsíční cenu (USD/hod × 730) převedenou do zvolené měny**.
 
-Ceny instancí jdou obnovit v adminu tlačítkem **„🔄 Obnovit ceny z cloudu“** – kromě plánů poskytovatele aktualizuje i `data/instances.json` (AWS z EC2 on-demand indexu, Azure z Retail Prices API). Pro GCP se použije Cloud Billing Catalog API (cena e2 = vCPU × `E2 Instance Core` + GiB × `E2 Instance Ram` pro daný region; shared-core typy e2-micro/small/medium se počítají jako 0,25 / 0,5 / 1 vCPU) – vyžaduje `GCP_API_KEY` v `.env` (jinak se katalog pro GCP přeskočí).
+### Obnova cen z cloudu (admin)
+
+Tlačítko **„🔄 Obnovit ceny z cloudu“** v adminu (`POST /api/admin/refresh-prices/:providerId`) obnoví **ceny plánů** (`data/providers.json`) i **aktuální ceny instancí** (`data/instances.json`) daného poskytovatele. Specifikace instancí (vCPU/RAM) se nemění, aktualizuje se jen `usdPerHour`.
+
+| Poskytovatel | Zdroj cen | Logika |
+|---|---|---|
+| **AWS** | EC2 on-demand index (`pricing.us-east-1.amazonaws.com`) | Pro daný region se najde nejlepší on-demand SKU instance (Linux, Shared tenancy, OnDemand) a vezme jeho hodinová cena. Index se cachuje 10 minut (velký soubor). |
+| **Azure** | Retail Prices API (`prices.azure.com`) | Vytáhne se SKU dle `armSkuName='Standard_<typ>'` (fallback na `skuName` s podtržítky → mezery); vybere se položka `Consumption`, product `Virtual Machines`, bez Windows a bez Spot/Low Priority, hodinová cena. |
+| **GCP** | Cloud Billing Catalog API | Cena e2 instance se **spočítá** ze dvou regionálních SKU (viz níže). Vyžaduje `GCP_API_KEY` v `.env` – bez klíče se GCP katalog přeskočí. |
+
+**GCP logika** (Compute Engine, service id `6F81-5844-456A`, paginace přes `pageToken`, měna USD):
+
+```
+cena = účetní_vCPU × core  +  ramGiB × ram
+
+core = "E2 Instance Core running in <region>"  (USD za vCPU / h)
+ram  = "E2 Instance Ram running in <region>"   (USD za GiB / h)
+```
+
+Shared-core typy se účtují jen zlomkem vCPU (RAM celá): `e2-micro` = **0,25** vCPU, `e2-small` = **0,5** vCPU, `e2-medium` = **1,0** vCPU. Ostatní e2 typy používají plný `vcpu` z katalogu. Příklad (region `us-central1`): `e2-standard-2` = 2 × core + 8 × ram.
 
 ### AWS – us-east-1
 
