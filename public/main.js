@@ -187,38 +187,39 @@ function renderTopology(result) {
 
   const cols = result.totals.perProvider.map(pp => pp.name)
   let html = `<div class="providers"><table class="compare-table"><thead><tr>`
-  html += `<th>${t('businessCloud')}<br><span class="region">${t('bcModel')}</span></th>`
+  html += `<th></th>`
   for (const name of cols) {
     const pp = result.totals.perProvider.find(x => x.name === name)
     html += `<th>${name}<br><span class="region">${pp.region}</span></th>`
   }
+  html += `<th>${t('businessCloud')}<br><span class="region">${t('bcModel')}</span></th>`
   html += '</tr></thead><tbody>'
 
-  html += `<tr class="section-divider"><th colspan="${1 + cols.length}">${t('modeTopology')}</th></tr>`
+  html += `<tr class="section-divider"><th colspan="${2 + cols.length}">${t('modeTopology')}</th></tr>`
 
   for (const node of result.perNode) {
     const specs = `${node.cpuGHz} GHz · ${node.ramGB} GB RAM · ${node.diskGB} GB (${esc(node.diskTierLabel)})`
     html += `<tr>`
     html += `<td class="tier-name"><div class="tier-label">${esc(node.name)}</div><div class="cell-specs">${specs}</div></td>`
-    html += `<td class="plan-cell"><div class="cell-price">${formatPrice(node.businessCloud.total, currency)}</div></td>`
     for (const name of cols) {
       const hs = node.hyperscalers[result.totals.perProvider.find(x => x.name === name).id]
       if (!hs) { html += '<td class="plan-cell">—</td>'; continue }
       html += `<td class="plan-cell"><div class="cell-price">${formatPrice(hs.total, currency)}</div>`
       html += `<div class="cell-meta">${t('matching', esc(hs.instance), hs.vcpu, hs.ramGiB)}</div></td>`
     }
+    html += `<td class="plan-cell"><div class="cell-price">${formatPrice(node.businessCloud.total, currency)}</div></td>`
     html += '</tr>'
   }
 
   html += `<tr class="total-row">`
   html += `<td class="tier-name"><strong>${t('totalRow')}</strong></td>`
-  const bc = result.totals.businessCloud
-  html += `<td><div class="cell-price">${formatPrice(bc.total, currency)}</div></td>`
   for (const pp of result.totals.perProvider) {
     const saving = t('savingPct', pp.savingPct)
     html += `<td><div class="cell-price">${formatPrice(pp.total, currency)}</div>`
     html += `<div class="${pp.savingPct >= 0 ? 'badge badge-save' : 'badge badge-more'}">${saving}</div></td>`
   }
+  const bc = result.totals.businessCloud
+  html += `<td><div class="cell-price">${formatPrice(bc.total, currency)}</div></td>`
   html += '</tr>'
 
   html += '</tbody></table></div>'
