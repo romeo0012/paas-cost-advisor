@@ -160,23 +160,7 @@ function renderResults(results, currency) {
   updateTotal()
 }
 
-// ---- Topology mode ----
-
-function applyMode() {
-  const mode = document.getElementById('mode').value
-  const isTopo = mode === 'topology'
-  document.getElementById('budgetLabel').style.display = isTopo ? 'none' : ''
-  document.getElementById('utilizationLabel').style.display = isTopo ? 'none' : ''
-  document.getElementById('topologyUploadLabel').style.display = isTopo ? '' : 'none'
-  document.getElementById('loadSampleBtn').style.display = isTopo ? '' : 'none'
-  document.getElementById('compareBtn').style.display = isTopo ? 'none' : ''
-  document.getElementById('topologyPanel').style.display = isTopo ? '' : 'none'
-  document.getElementById('providers').style.display = isTopo ? 'none' : ''
-  document.getElementById('selectionToolbar').style.display = isTopo ? 'none' : (document.getElementById('providers').innerHTML ? '' : 'none')
-  if (isTopo && lastTopologyResult) {
-    renderTopology(lastTopologyResult)
-  }
-}
+// ---- Topology comparison ----
 
 async function priceTopology(topology) {
   lastTopologyInput = topology
@@ -357,16 +341,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('utilization').value = String(DEFAULT_UTILIZATION)
   document.getElementById('utilization').addEventListener('change', fetchAdvice)
   document.getElementById('currency').addEventListener('change', () => {
-    if (document.getElementById('mode').value === 'topology' && lastTopologyInput) {
+    if (lastTopologyResult) {
       priceTopology(lastTopologyInput).catch(() => {})
     }
   })
-  document.getElementById('mode').addEventListener('change', applyMode)
-  document.getElementById('topologyFile').addEventListener('change', (e) => {
+  document.getElementById('ulTopoBtn').addEventListener('click', () => document.getElementById('ulTopoFile').click())
+  document.getElementById('ulTopoFile').addEventListener('change', (e) => {
     if (e.target.files && e.target.files[0]) handleTopologyFile(e.target.files[0])
+    e.target.value = ''
   })
   document.getElementById('loadSampleBtn').addEventListener('click', loadSampleTopology)
-  document.getElementById('compareBtn').addEventListener('click', fetchAdvice)
   await loadTiers()
   fetchAdvice()
 })
@@ -376,7 +360,7 @@ i18n.onLangChange.push(() => {
     updateTotal()
     fetchAdvice()
   }
-  if (document.getElementById('mode') && document.getElementById('mode').value === 'topology' && lastTopologyResult) {
+  if (lastTopologyResult) {
     renderTopology(lastTopologyResult)
   }
 })
