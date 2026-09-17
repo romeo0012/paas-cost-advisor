@@ -56,6 +56,7 @@ app.get(p('/api/catalog'), (_req, res) => {
     hoursPerMonth: cat.hoursPerMonth,
     storage: cat.storage,
     providers: cat.providers,
+    rates: require('./lib/currency').RATES,
     businessCloud: {
       commitments: bc.COMMITMENTS,
       cpu: bc.RATES.cpu,

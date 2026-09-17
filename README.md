@@ -82,7 +82,7 @@ Ceny plánů jsou v `data/providers.json` (měna CZK); specifikace tierů v `dat
 
 ## Dostupné instance
 
-Zdroj: `data/instances.json`. Páruje se nejlevnější vyhovující instance (on-demand, ceny USD/hod).
+Zdroj: `data/instances.json`. Páruje se nejlevnější vyhovující instance (on-demand, ceny USD/hod). Web i README sekce „Zdroje a metodika“ zobrazují **měsíční cenu (USD/hod × 730) převedenou do zvolené měny**.
 
 ### AWS – us-east-1
 

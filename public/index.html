@@ -103,30 +103,17 @@
 
         <h5 data-i18n="bcPoolTitle">Business Cloud (T-Cloud) – IaaS Resource Pool</h5>
         <p data-i18n="bcPoolText">Cena za celou architekturu jako sdílený pool (ne per-VM). Celkem = Σ CPU GHz × sazba + Σ RAM GB × sazba + Σ disk GB × sazba tieru + 2× disk × záloha + public IP. CPU se účtuje za celková GHz zaokrouhlená nahoru.</p>
-        <table class="rate-table">
-          <thead>
-            <tr>
-              <th data-i18n="rateCommitment">Závazek</th>
-              <th data-i18n="rateCpu">CPU (Kč/GHz/měs)</th>
-              <th data-i18n="rateRam">RAM (Kč/GB/měs)</th>
-              <th data-i18n="diskSuperFast">Super Fast</th>
-              <th data-i18n="diskFast">Fast</th>
-              <th data-i18n="diskStandard">Standard</th>
-              <th data-i18n="diskBasic">Basic</th>
-            </tr>
-          </thead>
-          <tbody id="bcRateTable"></tbody>
-        </table>
-        <p data-i18n="bcPoolExtra">Remote backup 0,68 Kč/GB/měs na 2× celkový disk; public IP 108 Kč/měs při přítomnosti opnsense firewallu.</p>
+        <div id="bcRateTable"></div>
+        <p id="bcPoolExtra"></p>
 
         <h5 data-i18n="hsMatchingTitle">AWS / GCP / Azure – IaaS matching</h5>
-        <p data-i18n="hsMatchingText">Pro každé VM se vybere nejlevnější instance splňující vCPU i RAM: vCPU = max(1, ceil(cpuGHz / 2,6)), RAM = max(1, ceil(ramGB)); cena = USD/hod × 730 + diskGB × storage sazba.</p>
+        <p data-i18n="hsMatchingText">Pro každé VM se vybere nejlevnější instance splňující vCPU i RAM: vCPU = max(1, ceil(cpuGHz / 2,6)), RAM = max(1, ceil(ramGB)); cena = měsíční cena instance + diskGB × storage sazba.</p>
 
         <h5 data-i18n="paasMatchingTitle">PaaS varianty (Elastic Beanstalk / App Engine / App Service / T-Cloud PaaS)</h5>
         <p data-i18n="paasMatchingText">VM se namapuje na nejmenší PaaS tier (1/2, 2/4, 4/8, 8/16 vCPU/RAM); T-Cloud PaaS se násobí využitím (výchozí 40 %).</p>
 
         <h5 data-i18n="availableInstances">Dostupné instance</h5>
-        <p data-i18n="availableInstancesText">On-demand ceny (USD/hod). Zdroj: data/instances.json.</p>
+        <p data-i18n="availableInstancesText">On-demand ceny převedené na měsíc (730 h). Zdroj: data/instances.json.</p>
         <div id="instanceTables"></div>
       </div>
     </footer>

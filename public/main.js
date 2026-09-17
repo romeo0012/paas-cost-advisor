@@ -32,6 +32,22 @@ function formatPrice(amount, currency) {
   return `$${n}`
 }
 
+function convertMoney(amount, from, to) {
+  if (amount == null || from === to) return amount
+  const rates = (methodologyData && methodologyData.rates) || { USD: 1, CZK: 23, EUR: 0.92 }
+  const inUsd = from === 'USD' ? amount : amount / rates[from]
+  return to === 'USD' ? inUsd : inUsd * rates[to]
+}
+
+function formatMoney(amount, currency, decimals = 0) {
+  const fixed = (Number(amount) || 0).toFixed(decimals)
+  const parts = fixed.split('.')
+  const n = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (parts[1] ? '.' + parts[1] : '')
+  if (currency === 'CZK') return `${n} Kč`
+  if (currency === 'EUR') return `${n} €`
+  return `$${n}`
+}
+
 function esc(s) {
   return String(s ?? '').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 }
@@ -292,36 +308,54 @@ async function loadMethodology() {
 }
 
 function renderMethodology() {
-  const rateBody = document.getElementById('bcRateTable')
+  const rateEl = document.getElementById('bcRateTable')
+  const extraEl = document.getElementById('bcPoolExtra')
   const instEl = document.getElementById('instanceTables')
-  if (!methodologyData || !rateBody || !instEl) return
+  if (!methodologyData || !rateEl || !instEl) return
   const t = i18n.t
+  const cur = document.getElementById('currency').value
   const bc = methodologyData.businessCloud
+  const hours = methodologyData.hoursPerMonth || 730
   const cmLabel = (cm) => cm === 0 ? t('noCommitment') : cm + ' m.'
-  const tierRate = (tier, cm) => (bc.diskTiers[tier] && bc.diskTiers[tier].rates[cm] != null) ? bc.diskTiers[tier].rates[cm] : ''
-  rateBody.innerHTML = bc.commitments.map(cm => `<tr>
+  const money = (v, from = 'CZK', decimals = 2) => formatMoney(convertMoney(v, from, cur), cur, decimals)
+  const tierRate = (tier, cm) => (bc.diskTiers[tier] && bc.diskTiers[tier].rates[cm] != null) ? bc.diskTiers[tier].rates[cm] : null
+
+  rateEl.innerHTML = `<table class="rate-table"><thead><tr>
+    <th>${t('rateCommitment')}</th>
+    <th>${t('rateCpu', cur)}</th>
+    <th>${t('rateRam', cur)}</th>
+    <th>${t('diskSuperFast')}</th>
+    <th>${t('diskFast')}</th>
+    <th>${t('diskStandard')}</th>
+    <th>${t('diskBasic')}</th>
+  </tr></thead><tbody>${bc.commitments.map(cm => `<tr>
     <td><strong>${cmLabel(cm)}</strong></td>
-    <td>${bc.cpu[cm]}</td>
-    <td>${bc.ram[cm]}</td>
-    <td>${tierRate('superfast', cm)}</td>
-    <td>${tierRate('fast', cm)}</td>
-    <td>${tierRate('standard', cm)}</td>
-    <td>${tierRate('basic', cm)}</td>
-  </tr>`).join('')
+    <td>${money(bc.cpu[cm])}</td>
+    <td>${money(bc.ram[cm])}</td>
+    <td>${tierRate('superfast', cm) != null ? money(tierRate('superfast', cm)) : ''}</td>
+    <td>${tierRate('fast', cm) != null ? money(tierRate('fast', cm)) : ''}</td>
+    <td>${tierRate('standard', cm) != null ? money(tierRate('standard', cm)) : ''}</td>
+    <td>${tierRate('basic', cm) != null ? money(tierRate('basic', cm)) : ''}</td>
+  </tr>`).join('')}</tbody></table>`
+
+  extraEl.textContent = t('bcPoolExtra',
+    formatMoney(convertMoney(bc.remoteBackupRateCZK, 'CZK', cur), cur, 2),
+    formatMoney(convertMoney(bc.publicIpRateCZK, 'CZK', cur), cur, 0))
 
   const providers = methodologyData.providers
   const storageRows = Object.entries(methodologyData.storage).map(([pid, s]) => {
     const name = providers[pid] ? providers[pid].name : pid
-    return `<tr><td><strong>${esc(name)}</strong></td><td>${s.superfast}</td><td>${s.fast}</td><td>${s.standard}</td><td>${s.basic}</td></tr>`
+    const cell = (v) => formatMoney(convertMoney(v, 'USD', cur), cur, 2)
+    return `<tr><td><strong>${esc(name)}</strong></td><td>${cell(s.superfast)}</td><td>${cell(s.fast)}</td><td>${cell(s.standard)}</td><td>${cell(s.basic)}</td></tr>`
   }).join('')
 
   const tables = Object.values(providers).map(prov => {
-    const rows = prov.instances.map(i => `<tr><td>${esc(i.type)}</td><td>${i.vcpu}</td><td>${i.ramGiB}</td><td>${i.usdPerHour.toFixed(4)}</td></tr>`).join('')
+    const rows = prov.instances.map(i => `<tr><td>${esc(i.type)}</td><td>${i.vcpu}</td><td>${i.ramGiB}</td><td>${formatMoney(convertMoney(i.usdPerHour * hours, 'USD', cur), cur, 0)}</td></tr>`).join('')
     return `<div class="inst-block"><h6>${esc(prov.name)} – ${esc(prov.region)}</h6>
-      <table class="rate-table"><thead><tr><th>${t('colInstance')}</th><th>${t('colVcpu')}</th><th>${t('colRam')}</th><th>${t('colUsdHour')}</th></tr></thead><tbody>${rows}</tbody></table></div>`
+      <table class="rate-table"><thead><tr><th>${t('colInstance')}</th><th>${t('colVcpu')}</th><th>${t('colRam')}</th><th>${t('colInstancePrice', cur)}</th></tr></thead><tbody>${rows}</tbody></table></div>`
   }).join('')
 
-  instEl.innerHTML = `<div class="inst-block"><h6>${t('storageRates')}</h6>
+  instEl.innerHTML = `<div class="inst-block"><h6>${t('storageRates', cur)}</h6>
     <table class="rate-table"><thead><tr><th></th><th>Super Fast</th><th>Fast</th><th>Standard</th><th>Basic</th></tr></thead><tbody>${storageRows}</tbody></table></div>${tables}`
 }
 
@@ -420,6 +454,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (lastTopologyResult) priceTopology(lastTopologyInput).catch(() => {})
   })
   document.getElementById('currency').addEventListener('change', () => {
+    renderMethodology()
     if (lastTopologyResult) {
       priceTopology(lastTopologyInput).catch(() => {})
     }
