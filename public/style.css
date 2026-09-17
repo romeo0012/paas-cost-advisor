@@ -39,6 +39,7 @@ p { color: #666; margin-bottom: 20px; }
 .controls button:hover { background: #005bb5; }
 .controls button.secondary { background: #e8edf2; color: #333; border: 1px solid #ccc; }
 .controls button.secondary:hover { background: #d0d7de; }
+.topology-upload input[type="file"] { max-width: 220px; }
 .topology-panel { margin-bottom: 24px; }
 .topology-summary { font-size: 0.95rem; margin-bottom: 12px; }
 .total-row td { background: #e8f4fd; font-weight: 700; }

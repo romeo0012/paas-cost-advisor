@@ -167,7 +167,7 @@ function applyMode() {
   const isTopo = mode === 'topology'
   document.getElementById('budgetLabel').style.display = isTopo ? 'none' : ''
   document.getElementById('utilizationLabel').style.display = isTopo ? 'none' : ''
-  document.getElementById('ulTopoBtn').style.display = isTopo ? '' : 'none'
+  document.getElementById('topologyUploadLabel').style.display = isTopo ? '' : 'none'
   document.getElementById('loadSampleBtn').style.display = isTopo ? '' : 'none'
   document.getElementById('compareBtn').style.display = isTopo ? 'none' : ''
   document.getElementById('topologyPanel').style.display = isTopo ? '' : 'none'
@@ -362,10 +362,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
   document.getElementById('mode').addEventListener('change', applyMode)
-  document.getElementById('ulTopoBtn').addEventListener('click', () => document.getElementById('ulTopoFile').click())
-  document.getElementById('ulTopoFile').addEventListener('change', (e) => {
+  document.getElementById('topologyFile').addEventListener('change', (e) => {
     if (e.target.files && e.target.files[0]) handleTopologyFile(e.target.files[0])
-    e.target.value = ''
   })
   document.getElementById('loadSampleBtn').addEventListener('click', loadSampleTopology)
   document.getElementById('compareBtn').addEventListener('click', fetchAdvice)
