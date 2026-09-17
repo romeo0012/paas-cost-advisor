@@ -123,7 +123,8 @@
       'instancesRefreshed': (n, total) => `Katalog instancí: ${n}/${total} aktualizováno.`,
       'instancesSkipped': (reason) => `Katalog instancí přeskočen (${reason}).`,
       'instancesFailed': (err) => `Katalog instancí selhal: ${err}.`,
-      'instanceSkipReason_gcpNoApi': 'GCP nemá veřejné cenové API',
+      'instanceSkipReason_gcpNoKey': 'GCP_API_KEY není nastaven',
+      'instanceSkipReason_gcpNoSku': 'nenalezena SKU E2 pro daný region',
       'instanceSkipReason_notInCatalog': 'poskytovatel není v katalogu',
     },
     en: {
@@ -247,7 +248,8 @@
       'instancesRefreshed': (n, total) => `Instance catalog: ${n}/${total} updated.`,
       'instancesSkipped': (reason) => `Instance catalog skipped (${reason}).`,
       'instancesFailed': (err) => `Instance catalog failed: ${err}.`,
-      'instanceSkipReason_gcpNoApi': 'GCP has no public pricing API',
+      'instanceSkipReason_gcpNoKey': 'GCP_API_KEY not set',
+      'instanceSkipReason_gcpNoSku': 'no E2 SKUs found for the region',
       'instanceSkipReason_notInCatalog': 'provider not in catalog',
     },
   }

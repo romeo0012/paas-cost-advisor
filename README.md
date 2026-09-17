@@ -84,7 +84,7 @@ Ceny plánů jsou v `data/providers.json` (měna CZK); specifikace tierů v `dat
 
 Zdroj: `data/instances.json`. Páruje se nejlevnější vyhovující instance (on-demand, ceny USD/hod). Web i README sekce „Zdroje a metodika“ zobrazují **měsíční cenu (USD/hod × 730) převedenou do zvolené měny**.
 
-Ceny instancí jdou obnovit v adminu tlačítkem **„🔄 Obnovit ceny z cloudu“** – kromě plánů poskytovatele aktualizuje i `data/instances.json` (AWS z EC2 on-demand indexu, Azure z Retail Prices API). U GCP veřejné cenové API není, proto se katalog pro GCP přeskočí.
+Ceny instancí jdou obnovit v adminu tlačítkem **„🔄 Obnovit ceny z cloudu“** – kromě plánů poskytovatele aktualizuje i `data/instances.json` (AWS z EC2 on-demand indexu, Azure z Retail Prices API). Pro GCP se použije Cloud Billing Catalog API (cena e2 = vCPU × `E2 Instance Core` + GiB × `E2 Instance Ram` pro daný region; shared-core typy e2-micro/small/medium se počítají jako 0,25 / 0,5 / 1 vCPU) – vyžaduje `GCP_API_KEY` v `.env` (jinak se katalog pro GCP přeskočí).
 
 ### AWS – us-east-1
 
