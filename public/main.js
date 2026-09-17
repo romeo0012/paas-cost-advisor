@@ -197,17 +197,36 @@ function renderTopology(result) {
 
   html += `<tr class="section-divider"><th colspan="${2 + cols.length}">${t('modeTopology')}</th></tr>`
 
+  const cell = (iaasHtml, paasHtml) => {
+    let s = '<td class="plan-cell">'
+    s += `<div class="cell-line"><span class="cell-tag">${t('iaasTag')}</span>${iaasHtml}</div>`
+    s += paasHtml
+    s += '</td>'
+    return s
+  }
+
   for (const node of result.perNode) {
     const specs = `${node.cpuGHz} GHz · ${node.ramGB} GB RAM · ${node.diskGB} GB (${esc(node.diskTierLabel)})`
     html += `<tr>`
     html += `<td class="tier-name"><div class="tier-label">${esc(node.name)}</div><div class="cell-specs">${specs}</div></td>`
     for (const name of cols) {
-      const hs = node.hyperscalers[result.totals.perProvider.find(x => x.name === name).id]
-      if (!hs) { html += '<td class="plan-cell">—</td>'; continue }
-      html += `<td class="plan-cell"><div class="cell-price">${formatPrice(hs.total, currency)}</div>`
-      html += `<div class="cell-meta">${t('matching', esc(hs.instance), hs.vcpu, hs.ramGiB)}</div></td>`
+      const pid = result.totals.perProvider.find(x => x.name === name).id
+      const hs = node.hyperscalers[pid]
+      const q = node.paas[pid]
+      const iaas = hs
+        ? `<span class="cell-price">${formatPrice(hs.total, currency)}</span></div><div class="cell-meta">${t('matching', esc(hs.instance), hs.vcpu, hs.ramGiB)}</div>`
+        : `—</div>`
+      const paas = q
+        ? `<div class="cell-line"><span class="cell-tag">${t('paasTag')}</span><span class="cell-price">${formatPrice(q.total, currency)}</span></div><div class="cell-meta">${esc(t('paasMatching', q.note, q.count))}</div>`
+        : ''
+      html += cell(iaas, paas)
     }
-    html += `<td class="plan-cell"><div class="cell-price">${formatPrice(node.businessCloud.total, currency)}</div></td>`
+    const qt = node.paas.tcloud
+    const bcIaaS = `<span class="cell-price">${formatPrice(node.businessCloud.total, currency)}</span></div><div class="cell-meta">${t('bcModel')}</div>`
+    const bcPaaS = qt
+      ? `<div class="cell-line"><span class="cell-tag">${t('paasTag')}</span><span class="cell-price">${formatPrice(qt.total, currency)}</span></div><div class="cell-meta">${esc(t('paasMatching', qt.note, qt.count))}</div>`
+      : ''
+    html += cell(bcIaaS, bcPaaS)
     html += '</tr>'
   }
 
@@ -215,11 +234,18 @@ function renderTopology(result) {
   html += `<td class="tier-name"><strong>${t('totalRow')}</strong></td>`
   for (const pp of result.totals.perProvider) {
     const saving = t('savingPct', pp.savingPct)
-    html += `<td><div class="cell-price">${formatPrice(pp.total, currency)}</div>`
-    html += `<div class="${pp.savingPct >= 0 ? 'badge badge-save' : 'badge badge-more'}">${saving}</div></td>`
+    const q = result.totals.paas[pp.id]
+    const iaas = `<span class="cell-price">${formatPrice(pp.total, currency)}</span></div><div class="${pp.savingPct >= 0 ? 'badge badge-save' : 'badge badge-more'}">${saving}</div>`
+    const paas = q
+      ? `<div class="cell-line"><span class="cell-tag">${t('paasTag')}</span><span class="cell-price">${formatPrice(q.total, currency)}</span></div>`
+      : ''
+    html += cell(iaas, paas)
   }
   const bc = result.totals.businessCloud
-  html += `<td><div class="cell-price">${formatPrice(bc.total, currency)}</div></td>`
+  const bcTotalCZK = result.totals.paas.tcloud
+  html += cell(`<span class="cell-price">${formatPrice(bc.total, currency)}</span></div>`, bcTotalCZK
+    ? `<div class="cell-line"><span class="cell-tag">${t('paasTag')}</span><span class="cell-price">${formatPrice(bcTotalCZK.total, currency)}</span></div>`
+    : '')
   html += '</tr>'
 
   html += '</tbody></table></div>'

@@ -57,6 +57,8 @@ p { color: #666; margin-bottom: 20px; }
 .section-divider th { background: #e8edf2; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; color: #555; text-align: left; padding: 6px 12px; border: 1px solid #d0d7de; }
 .tier-label { display: inline-block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; color: #888; margin-bottom: 2px; }
 .cell-price { font-weight: 700; color: #0070f3; font-size: 1rem; margin-bottom: 2px; }
+.cell-line { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
+.cell-tag { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.5px; color: #777; background: #f0f0f0; border-radius: 3px; padding: 1px 4px; }
 .cell-specs { font-size: 0.75rem; color: #666; margin-bottom: 4px; }
 .cell-meta { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; }
 .badge { display: inline-block; background: #e6f7e6; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
