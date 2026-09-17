@@ -6,6 +6,8 @@ let tiers = []
 let priceByTier = {} // { provider: { tierId: {price, currency, note, maxInstances} } }
 let lastBudget = Infinity
 let lastCurrency = 'CZK'
+let lastTopologyResult = null
+let lastTopologyInput = null
 
 async function loadTiers() {
   tiers = await fetch(BP + '/api/admin/tiers').then(r => r.json())
@@ -27,6 +29,10 @@ function formatPrice(amount, currency) {
   if (currency === 'CZK') return `${n} Kč`
   if (currency === 'EUR') return `${n} €`
   return `$${n}`
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 }
 
 function renderResults(results, currency) {
@@ -154,8 +160,109 @@ function renderResults(results, currency) {
   updateTotal()
 }
 
-function esc(s) {
-  return String(s).replace(/"/g, '&quot;').replace(/</g, '&lt;')
+// ---- Topology mode ----
+
+function applyMode() {
+  const mode = document.getElementById('mode').value
+  const isTopo = mode === 'topology'
+  document.getElementById('budgetLabel').style.display = isTopo ? 'none' : ''
+  document.getElementById('utilizationLabel').style.display = isTopo ? 'none' : ''
+  document.getElementById('topologyUploadLabel').style.display = isTopo ? '' : 'none'
+  document.getElementById('loadSampleBtn').style.display = isTopo ? '' : 'none'
+  document.getElementById('compareBtn').style.display = isTopo ? 'none' : ''
+  document.getElementById('topologyPanel').style.display = isTopo ? '' : 'none'
+  document.getElementById('providers').style.display = isTopo ? 'none' : ''
+  document.getElementById('selectionToolbar').style.display = isTopo ? 'none' : (document.getElementById('providers').innerHTML ? '' : 'none')
+  if (isTopo && lastTopologyResult) {
+    renderTopology(lastTopologyResult)
+  }
+}
+
+async function priceTopology(topology) {
+  lastTopologyInput = topology
+  const currency = document.getElementById('currency').value
+  const res = await fetch(BP + '/api/topology/price', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ topology, currency }),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || `HTTP ${res.status}`)
+  }
+  return res.json()
+}
+
+function renderTopology(result) {
+  lastTopologyResult = result
+  const currency = document.getElementById('currency').value
+  const t = i18n.t
+  const summary = document.getElementById('topologySummary')
+  summary.innerHTML = `<strong>${t('topologyName', result.envName)}</strong>
+    · ${t('topologyNodes', result.nodeCount)} · ${t('commitment')}: ${result.commitmentMonths} měs.`
+
+  const cols = result.totals.perProvider.map(pp => pp.name)
+  let html = `<div class="providers"><table class="compare-table"><thead><tr>`
+  html += `<th>${t('businessCloud')}<br><span class="region">${t('bcModel')}</span></th>`
+  for (const name of cols) {
+    const pp = result.totals.perProvider.find(x => x.name === name)
+    html += `<th>${name}<br><span class="region">${pp.region}</span></th>`
+  }
+  html += '</tr></thead><tbody>'
+
+  html += `<tr class="section-divider"><th colspan="${1 + cols.length}">${t('modeTopology')}</th></tr>`
+
+  for (const node of result.perNode) {
+    const specs = `${node.cpuGHz} GHz · ${node.ramGB} GB RAM · ${node.diskGB} GB (${esc(node.diskTierLabel)})`
+    html += `<tr>`
+    html += `<td class="tier-name"><div class="tier-label">${esc(node.name)}</div><div class="cell-specs">${specs}</div></td>`
+    html += `<td class="plan-cell"><div class="cell-price">${formatPrice(node.businessCloud.total, currency)}</div></td>`
+    for (const name of cols) {
+      const hs = node.hyperscalers[result.totals.perProvider.find(x => x.name === name).id]
+      if (!hs) { html += '<td class="plan-cell">—</td>'; continue }
+      html += `<td class="plan-cell"><div class="cell-price">${formatPrice(hs.total, currency)}</div>`
+      html += `<div class="cell-meta">${t('matching', esc(hs.instance), hs.vcpu, hs.ramGiB)}</div></td>`
+    }
+    html += '</tr>'
+  }
+
+  html += `<tr class="total-row">`
+  html += `<td class="tier-name"><strong>${t('totalRow')}</strong></td>`
+  const bc = result.totals.businessCloud
+  html += `<td><div class="cell-price">${formatPrice(bc.total, currency)}</div></td>`
+  for (const pp of result.totals.perProvider) {
+    const saving = t('savingPct', pp.savingPct)
+    html += `<td><div class="cell-price">${formatPrice(pp.total, currency)}</div>`
+    html += `<div class="${pp.savingPct >= 0 ? 'badge badge-save' : 'badge badge-more'}">${saving}</div></td>`
+  }
+  html += '</tr>'
+
+  html += '</tbody></table></div>'
+  document.getElementById('topologyResults').innerHTML = html
+}
+
+function handleTopologyFile(file) {
+  const reader = new FileReader()
+  reader.onload = async () => {
+    try {
+      const topology = JSON.parse(reader.result)
+      const result = await priceTopology(topology)
+      renderTopology(result)
+    } catch (e) {
+      alert(e.message)
+    }
+  }
+  reader.readAsText(file)
+}
+
+async function loadSampleTopology() {
+  try {
+    const sample = await fetch(BP + '/api/topology/sample').then(r => r.json())
+    const result = await priceTopology(sample)
+    renderTopology(result)
+  } catch (e) {
+    alert(e.message)
+  }
 }
 
 function updateTierSpecs(sel) {
@@ -249,6 +356,17 @@ document.getElementById('deselectAllBtn').addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('utilization').value = String(DEFAULT_UTILIZATION)
   document.getElementById('utilization').addEventListener('change', fetchAdvice)
+  document.getElementById('currency').addEventListener('change', () => {
+    if (document.getElementById('mode').value === 'topology' && lastTopologyInput) {
+      priceTopology(lastTopologyInput).catch(() => {})
+    }
+  })
+  document.getElementById('mode').addEventListener('change', applyMode)
+  document.getElementById('topologyFile').addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) handleTopologyFile(e.target.files[0])
+  })
+  document.getElementById('loadSampleBtn').addEventListener('click', loadSampleTopology)
+  document.getElementById('compareBtn').addEventListener('click', fetchAdvice)
   await loadTiers()
   fetchAdvice()
 })
@@ -257,5 +375,8 @@ i18n.onLangChange.push(() => {
   if (document.getElementById('providers').innerHTML) {
     updateTotal()
     fetchAdvice()
+  }
+  if (document.getElementById('mode') && document.getElementById('mode').value === 'topology' && lastTopologyResult) {
+    renderTopology(lastTopologyResult)
   }
 })

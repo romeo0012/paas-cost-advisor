@@ -18,7 +18,13 @@
     <p><span data-i18n="subtitle">Porovnej ceny PaaS řešení napříč poskytovateli</span> &nbsp; <a href="admin" class="admin-link" data-i18n="adminLink">Správa →</a></p>
 
     <section class="controls">
-      <label><span data-i18n="maxBudget">Maximální měsíční rozpočet:</span>
+      <label><span data-i18n="mode">Režim srovnání:</span>
+        <select id="mode">
+          <option value="tiers" data-i18n="modeTiers">Podle tierů</option>
+          <option value="topology" data-i18n="modeTopology">Podle topologie</option>
+        </select>
+      </label>
+      <label id="budgetLabel"><span data-i18n="maxBudget">Maximální měsíční rozpočet:</span>
         <input type="number" id="budget" value="20000" min="0" step="100">
       </label>
       <label><span data-i18n="currency">Měna:</span>
@@ -28,7 +34,7 @@
           <option value="CZK" selected>CZK</option>
         </select>
       </label>
-      <label><span data-i18n="utilization">Využití PaaS:</span>
+      <label id="utilizationLabel"><span data-i18n="utilization">Využití PaaS:</span>
         <select id="utilization">
           <option value="20">20 %</option>
           <option value="40">40 %</option>
@@ -37,7 +43,17 @@
           <option value="100" selected>100 %</option>
         </select>
       </label>
-      <button onclick="fetchAdvice()" data-i18n="compare">Porovnat</button>
+      <label class="topology-upload" id="topologyUploadLabel" style="display:none">
+        <span data-i18n="uploadTopology">Topologie (JSON z iaas-api-mgmt):</span>
+        <input type="file" id="topologyFile" accept=".json,application/json">
+      </label>
+      <button id="loadSampleBtn" class="secondary" style="display:none" data-i18n="loadSample">Načíst vzor</button>
+      <button onclick="fetchAdvice()" id="compareBtn" data-i18n="compare">Porovnat</button>
+    </section>
+
+    <section class="topology-panel" id="topologyPanel" style="display:none">
+      <div class="topology-summary" id="topologySummary"></div>
+      <div class="providers" id="topologyResults"></div>
     </section>
 
     <section class="selection-toolbar" id="selectionToolbar" style="display:none">

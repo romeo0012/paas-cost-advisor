@@ -44,6 +44,20 @@ app.post(p('/api/advice'), (req, res) => {
   res.json(results)
 })
 
+app.get(p('/api/topology/sample'), (_req, res) => {
+  res.json(require('./lib/topology').sampleTopology())
+})
+
+app.post(p('/api/topology/price'), (req, res) => {
+  try {
+    const currency = req.query.currency || req.body.currency || 'CZK'
+    const result = require('./lib/topology').priceTopology(req.body.topology != null ? req.body.topology : req.body, currency)
+    res.json(result)
+  } catch (e) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
 app.get(p('/api/admin/providers'), (_req, res) => {
   res.json(listProviders())
 })

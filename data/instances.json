@@ -1,0 +1,85 @@
+{
+  "ghzPerVcpu": 2.6,
+  "hoursPerMonth": 730,
+  "storage": {
+    "aws": { "superfast": 0.08, "fast": 0.08, "standard": 0.08, "basic": 0.10 },
+    "gcp": { "superfast": 0.17, "fast": 0.17, "standard": 0.17, "basic": 0.04 },
+    "azure": { "superfast": 0.08, "fast": 0.08, "standard": 0.08, "basic": 0.04 }
+  },
+  "providers": {
+    "aws": {
+      "name": "AWS",
+      "region": "us-east-1",
+      "instances": [
+        { "type": "t3.micro", "vcpu": 2, "ramGiB": 1, "usdPerHour": 0.0096 },
+        { "type": "t3.small", "vcpu": 2, "ramGiB": 2, "usdPerHour": 0.0208 },
+        { "type": "t3.medium", "vcpu": 2, "ramGiB": 4, "usdPerHour": 0.0416 },
+        { "type": "t3.large", "vcpu": 2, "ramGiB": 8, "usdPerHour": 0.0832 },
+        { "type": "t3.xlarge", "vcpu": 4, "ramGiB": 16, "usdPerHour": 0.1664 },
+        { "type": "t3.2xlarge", "vcpu": 8, "ramGiB": 32, "usdPerHour": 0.3328 },
+        { "type": "m5.large", "vcpu": 2, "ramGiB": 8, "usdPerHour": 0.096 },
+        { "type": "m5.xlarge", "vcpu": 4, "ramGiB": 16, "usdPerHour": 0.192 },
+        { "type": "m5.2xlarge", "vcpu": 8, "ramGiB": 32, "usdPerHour": 0.384 },
+        { "type": "m5.4xlarge", "vcpu": 16, "ramGiB": 64, "usdPerHour": 0.768 },
+        { "type": "m5.8xlarge", "vcpu": 32, "ramGiB": 128, "usdPerHour": 1.536 },
+        { "type": "m5.16xlarge", "vcpu": 64, "ramGiB": 256, "usdPerHour": 3.072 },
+        { "type": "m5.24xlarge", "vcpu": 96, "ramGiB": 384, "usdPerHour": 4.608 },
+        { "type": "c5.large", "vcpu": 2, "ramGiB": 4, "usdPerHour": 0.085 },
+        { "type": "c5.xlarge", "vcpu": 4, "ramGiB": 8, "usdPerHour": 0.17 },
+        { "type": "c5.2xlarge", "vcpu": 8, "ramGiB": 16, "usdPerHour": 0.34 },
+        { "type": "c5.4xlarge", "vcpu": 16, "ramGiB": 32, "usdPerHour": 0.68 },
+        { "type": "c5.9xlarge", "vcpu": 36, "ramGiB": 72, "usdPerHour": 1.53 },
+        { "type": "r5.xlarge", "vcpu": 4, "ramGiB": 32, "usdPerHour": 0.252 },
+        { "type": "r5.2xlarge", "vcpu": 8, "ramGiB": 64, "usdPerHour": 0.504 },
+        { "type": "r5.4xlarge", "vcpu": 16, "ramGiB": 128, "usdPerHour": 1.008 },
+        { "type": "r5.8xlarge", "vcpu": 32, "ramGiB": 256, "usdPerHour": 2.016 }
+      ]
+    },
+    "gcp": {
+      "name": "GCP",
+      "region": "us-central1",
+      "instances": [
+        { "type": "e2-micro", "vcpu": 1, "ramGiB": 1, "usdPerHour": 0.0085 },
+        { "type": "e2-small", "vcpu": 2, "ramGiB": 2, "usdPerHour": 0.0168 },
+        { "type": "e2-medium", "vcpu": 2, "ramGiB": 4, "usdPerHour": 0.0335 },
+        { "type": "e2-standard-2", "vcpu": 2, "ramGiB": 8, "usdPerHour": 0.067 },
+        { "type": "e2-standard-4", "vcpu": 4, "ramGiB": 16, "usdPerHour": 0.134 },
+        { "type": "e2-standard-8", "vcpu": 8, "ramGiB": 32, "usdPerHour": 0.268 },
+        { "type": "e2-standard-16", "vcpu": 16, "ramGiB": 64, "usdPerHour": 0.536 },
+        { "type": "e2-standard-32", "vcpu": 32, "ramGiB": 128, "usdPerHour": 1.072 },
+        { "type": "e2-highmem-2", "vcpu": 2, "ramGiB": 16, "usdPerHour": 0.0808 },
+        { "type": "e2-highmem-4", "vcpu": 4, "ramGiB": 32, "usdPerHour": 0.1616 },
+        { "type": "e2-highmem-8", "vcpu": 8, "ramGiB": 64, "usdPerHour": 0.3232 },
+        { "type": "e2-highmem-16", "vcpu": 16, "ramGiB": 128, "usdPerHour": 0.6464 },
+        { "type": "e2-highcpu-2", "vcpu": 2, "ramGiB": 2, "usdPerHour": 0.0416 },
+        { "type": "e2-highcpu-4", "vcpu": 4, "ramGiB": 4, "usdPerHour": 0.0832 },
+        { "type": "e2-highcpu-8", "vcpu": 8, "ramGiB": 8, "usdPerHour": 0.1664 }
+      ]
+    },
+    "azure": {
+      "name": "Azure",
+      "region": "eastus",
+      "instances": [
+        { "type": "B1s", "vcpu": 1, "ramGiB": 1, "usdPerHour": 0.0126 },
+        { "type": "B1ms", "vcpu": 1, "ramGiB": 2, "usdPerHour": 0.0252 },
+        { "type": "B2s", "vcpu": 2, "ramGiB": 4, "usdPerHour": 0.0504 },
+        { "type": "B2ms", "vcpu": 2, "ramGiB": 8, "usdPerHour": 0.1008 },
+        { "type": "B4ms", "vcpu": 4, "ramGiB": 16, "usdPerHour": 0.2016 },
+        { "type": "B8ms", "vcpu": 8, "ramGiB": 32, "usdPerHour": 0.4032 },
+        { "type": "B12ms", "vcpu": 12, "ramGiB": 48, "usdPerHour": 0.6526 },
+        { "type": "B16ms", "vcpu": 16, "ramGiB": 64, "usdPerHour": 0.8702 },
+        { "type": "B20ms", "vcpu": 20, "ramGiB": 80, "usdPerHour": 1.0877 },
+        { "type": "D2as_v5", "vcpu": 2, "ramGiB": 8, "usdPerHour": 0.096 },
+        { "type": "D4as_v5", "vcpu": 4, "ramGiB": 16, "usdPerHour": 0.192 },
+        { "type": "D8as_v5", "vcpu": 8, "ramGiB": 32, "usdPerHour": 0.384 },
+        { "type": "D16as_v5", "vcpu": 16, "ramGiB": 64, "usdPerHour": 0.768 },
+        { "type": "D32as_v5", "vcpu": 32, "ramGiB": 128, "usdPerHour": 1.536 },
+        { "type": "F4s_v2", "vcpu": 4, "ramGiB": 8, "usdPerHour": 0.2154 },
+        { "type": "F8s_v2", "vcpu": 8, "ramGiB": 16, "usdPerHour": 0.4308 },
+        { "type": "E4as_v5", "vcpu": 4, "ramGiB": 32, "usdPerHour": 0.252 },
+        { "type": "E8as_v5", "vcpu": 8, "ramGiB": 64, "usdPerHour": 0.504 },
+        { "type": "E16as_v5", "vcpu": 16, "ramGiB": 128, "usdPerHour": 1.008 }
+      ]
+    }
+  }
+}
