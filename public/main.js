@@ -165,10 +165,11 @@ function renderResults(results, currency) {
 async function priceTopology(topology) {
   lastTopologyInput = topology
   const currency = document.getElementById('currency').value
+  const utilizationPct = Number(document.getElementById('utilization').value) || DEFAULT_UTILIZATION
   const res = await fetch(BP + '/api/topology/price', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topology, currency }),
+    body: JSON.stringify({ topology, currency, utilizationPct }),
   })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
@@ -224,7 +225,7 @@ function renderTopology(result) {
     const qt = node.paas.tcloud
     const bcIaaS = `<span class="cell-price">${formatPrice(node.businessCloud.total, currency)}</span></div><div class="cell-meta">${t('bcModel')}</div>`
     const bcPaaS = qt
-      ? `<div class="cell-line"><span class="cell-tag">${t('paasTag')}</span><span class="cell-price">${formatPrice(qt.total, currency)}</span></div><div class="cell-meta">${esc(t('paasMatching', qt.note, qt.count))}</div>`
+      ? `<div class="cell-line"><span class="cell-tag">${t('paasTag')}</span><span class="cell-price">${formatPrice(qt.total, currency)}</span></div><div class="cell-meta">${esc(t('paasMatching', qt.note, qt.count))}${qt.utilizationPct != null ? ` · ${qt.utilizationPct} %` : ''}</div>`
       : ''
     html += cell(bcIaaS, bcPaaS)
     html += '</tr>'
@@ -366,7 +367,10 @@ document.getElementById('deselectAllBtn').addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('utilization').value = String(DEFAULT_UTILIZATION)
-  document.getElementById('utilization').addEventListener('change', fetchAdvice)
+  document.getElementById('utilization').addEventListener('change', () => {
+    fetchAdvice()
+    if (lastTopologyResult) priceTopology(lastTopologyInput).catch(() => {})
+  })
   document.getElementById('currency').addEventListener('change', () => {
     if (lastTopologyResult) {
       priceTopology(lastTopologyInput).catch(() => {})

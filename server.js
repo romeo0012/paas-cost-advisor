@@ -51,7 +51,10 @@ app.get(p('/api/topology/sample'), (_req, res) => {
 app.post(p('/api/topology/price'), (req, res) => {
   try {
     const currency = req.query.currency || req.body.currency || 'CZK'
-    const result = require('./lib/topology').priceTopology(req.body.topology != null ? req.body.topology : req.body, currency)
+    const utilizationPct = req.body.utilizationPct != null
+      ? Number(req.body.utilizationPct)
+      : (Number(process.env.PAAS_UTILIZATION) || 40)
+    const result = require('./lib/topology').priceTopology(req.body.topology != null ? req.body.topology : req.body, currency, utilizationPct)
     res.json(result)
   } catch (e) {
     res.status(400).json({ error: e.message })
