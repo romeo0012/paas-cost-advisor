@@ -43,10 +43,8 @@
           <option value="100" selected>100 %</option>
         </select>
       </label>
-      <label class="topology-upload" id="topologyUploadLabel" style="display:none">
-        <span data-i18n="uploadTopology">Topologie (JSON z iaas-api-mgmt):</span>
-        <input type="file" id="topologyFile" accept=".json,application/json">
-      </label>
+      <button id="ulTopoBtn" class="secondary" style="display:none" data-i18n="uploadTopology">Nahrát topologii (json)</button>
+      <input type="file" id="ulTopoFile" accept=".json,application/json" style="display:none">
       <button id="loadSampleBtn" class="secondary" style="display:none" data-i18n="loadSample">Načíst vzor</button>
       <button onclick="fetchAdvice()" id="compareBtn" data-i18n="compare">Porovnat</button>
     </section>
