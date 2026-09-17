@@ -48,6 +48,26 @@ app.get(p('/api/topology/sample'), (_req, res) => {
   res.json(require('./lib/topology').sampleTopology())
 })
 
+app.get(p('/api/catalog'), (_req, res) => {
+  const bc = require('./lib/businesscloud')
+  const cat = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'instances.json'), 'utf-8'))
+  res.json({
+    ghzPerVcpu: cat.ghzPerVcpu,
+    hoursPerMonth: cat.hoursPerMonth,
+    storage: cat.storage,
+    providers: cat.providers,
+    businessCloud: {
+      commitments: bc.COMMITMENTS,
+      cpu: bc.RATES.cpu,
+      ram: bc.RATES.ram,
+      diskTiers: bc.DISK_TIERS,
+      publicIpRateCZK: bc.PUBLIC_IP_RATE_CZK,
+      remoteBackupRateCZK: bc.REMOTE_BACKUP_RATE_CZK,
+      remoteBackupMultiplier: bc.REMOTE_BACKUP_MULTIPLIER,
+    },
+  })
+})
+
 app.post(p('/api/topology/price'), (req, res) => {
   try {
     const currency = req.query.currency || req.body.currency || 'CZK'

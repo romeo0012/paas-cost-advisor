@@ -8,6 +8,7 @@ let lastBudget = Infinity
 let lastCurrency = 'CZK'
 let lastTopologyResult = null
 let lastTopologyInput = null
+let methodologyData = null
 
 async function loadTiers() {
   tiers = await fetch(BP + '/api/admin/tiers').then(r => r.json())
@@ -277,6 +278,53 @@ async function loadSampleTopology() {
   }
 }
 
+// ---- Sources & methodology ----
+
+async function loadMethodology() {
+  const el = document.getElementById('instanceTables')
+  if (!el) return
+  try {
+    methodologyData = await fetch(BP + '/api/catalog').then(r => r.json())
+  } catch (e) {
+    return
+  }
+  renderMethodology()
+}
+
+function renderMethodology() {
+  const rateBody = document.getElementById('bcRateTable')
+  const instEl = document.getElementById('instanceTables')
+  if (!methodologyData || !rateBody || !instEl) return
+  const t = i18n.t
+  const bc = methodologyData.businessCloud
+  const cmLabel = (cm) => cm === 0 ? t('noCommitment') : cm + ' m.'
+  const tierRate = (tier, cm) => (bc.diskTiers[tier] && bc.diskTiers[tier].rates[cm] != null) ? bc.diskTiers[tier].rates[cm] : ''
+  rateBody.innerHTML = bc.commitments.map(cm => `<tr>
+    <td><strong>${cmLabel(cm)}</strong></td>
+    <td>${bc.cpu[cm]}</td>
+    <td>${bc.ram[cm]}</td>
+    <td>${tierRate('superfast', cm)}</td>
+    <td>${tierRate('fast', cm)}</td>
+    <td>${tierRate('standard', cm)}</td>
+    <td>${tierRate('basic', cm)}</td>
+  </tr>`).join('')
+
+  const providers = methodologyData.providers
+  const storageRows = Object.entries(methodologyData.storage).map(([pid, s]) => {
+    const name = providers[pid] ? providers[pid].name : pid
+    return `<tr><td><strong>${esc(name)}</strong></td><td>${s.superfast}</td><td>${s.fast}</td><td>${s.standard}</td><td>${s.basic}</td></tr>`
+  }).join('')
+
+  const tables = Object.values(providers).map(prov => {
+    const rows = prov.instances.map(i => `<tr><td>${esc(i.type)}</td><td>${i.vcpu}</td><td>${i.ramGiB}</td><td>${i.usdPerHour.toFixed(4)}</td></tr>`).join('')
+    return `<div class="inst-block"><h6>${esc(prov.name)} – ${esc(prov.region)}</h6>
+      <table class="rate-table"><thead><tr><th>${t('colInstance')}</th><th>${t('colVcpu')}</th><th>${t('colRam')}</th><th>${t('colUsdHour')}</th></tr></thead><tbody>${rows}</tbody></table></div>`
+  }).join('')
+
+  instEl.innerHTML = `<div class="inst-block"><h6>${t('storageRates')}</h6>
+    <table class="rate-table"><thead><tr><th></th><th>Super Fast</th><th>Fast</th><th>Standard</th><th>Basic</th></tr></thead><tbody>${storageRows}</tbody></table></div>${tables}`
+}
+
 function updateTierSpecs(sel) {
   const row = sel.closest('tr')
   const opt = sel.options[sel.selectedIndex]
@@ -383,10 +431,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   })
   document.getElementById('loadSampleBtn').addEventListener('click', loadSampleTopology)
   await loadTiers()
+  await loadMethodology()
   fetchAdvice()
 })
 
 i18n.onLangChange.push(() => {
+  renderMethodology()
   if (document.getElementById('providers').innerHTML) {
     updateTotal()
     fetchAdvice()

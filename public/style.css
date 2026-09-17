@@ -92,4 +92,15 @@ p { color: #666; margin-bottom: 20px; }
 .sources a { color: #1967d2; text-decoration: none; }
 .sources a:hover { text-decoration: underline; }
 .method-note { margin-top: 12px; font-size: 0.78rem; color: #777; line-height: 1.5; }
+.methodology { margin-top: 24px; }
+.methodology h4 { font-size: 0.95rem; color: #333; margin: 0 0 10px; }
+.methodology h5 { font-size: 0.85rem; color: #333; margin: 18px 0 6px; }
+.methodology h6 { font-size: 0.8rem; color: #444; margin: 12px 0 6px; }
+.methodology p { font-size: 0.78rem; color: #666; line-height: 1.5; margin: 4px 0 8px; }
+.rate-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin: 6px 0 10px; }
+.rate-table th, .rate-table td { padding: 5px 8px; border: 1px solid #e6e6e6; text-align: left; }
+.rate-table th { background: #f5f8fb; color: #333; font-weight: 600; }
+.rate-table tbody tr:nth-child(even) { background: #fafafa; }
+.inst-block { margin-bottom: 10px; }
+
 
