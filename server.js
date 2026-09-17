@@ -6,7 +6,7 @@ const fs = require('fs')
 const path = require('path')
 const BASE_PATH = process.env.BASE_PATH || ''
 const { getAllPlans, getAdvice, listProviders, updatePlan, addPlan, deletePlan, updateProvider, listTiers, updateTier, addTier, deleteTier } = require('./providers')
-const { refreshProviderPrices } = require('./lib/pricing')
+const { refreshProviderPrices, refreshInstancePrices } = require('./lib/pricing')
 const port = process.env.PORT || 3000
 const PAAS_UTILIZATION = Number(process.env.PAAS_UTILIZATION) || 40
 
@@ -116,8 +116,15 @@ app.get(p('/api/admin/tiers'), (_req, res) => {
 
 app.post(p('/api/admin/refresh-prices/:providerId'), async (req, res) => {
   try {
-    const result = await refreshProviderPrices(req.params.providerId)
-    res.json(result)
+    const providerId = req.params.providerId
+    const plans = await refreshProviderPrices(providerId)
+    let instances
+    try {
+      instances = await refreshInstancePrices(providerId)
+    } catch (e) {
+      instances = { provider: providerId, error: e.message }
+    }
+    res.json({ plans, instances })
   } catch (e) {
     res.status(400).json({ error: e.message })
   }

@@ -120,6 +120,11 @@
       'pricesRefreshed': (ok, failed) => failed
         ? `Ceny obnoveny: ${ok} OK, ${failed.length} selhalo: ${failed.map(f => f.name).join(', ')}`
         : `Ceny obnoveny: ${ok} OK`,
+      'instancesRefreshed': (n, total) => `Katalog instancí: ${n}/${total} aktualizováno.`,
+      'instancesSkipped': (reason) => `Katalog instancí přeskočen (${reason}).`,
+      'instancesFailed': (err) => `Katalog instancí selhal: ${err}.`,
+      'instanceSkipReason_gcpNoApi': 'GCP nemá veřejné cenové API',
+      'instanceSkipReason_notInCatalog': 'poskytovatel není v katalogu',
     },
     en: {
       // index.html static
@@ -239,6 +244,11 @@
       'pricesRefreshed': (ok, failed) => failed
         ? `Prices refreshed: ${ok} OK, ${failed.length} failed: ${failed.map(f => f.name).join(', ')}`
         : `Prices refreshed: ${ok} OK`,
+      'instancesRefreshed': (n, total) => `Instance catalog: ${n}/${total} updated.`,
+      'instancesSkipped': (reason) => `Instance catalog skipped (${reason}).`,
+      'instancesFailed': (err) => `Instance catalog failed: ${err}.`,
+      'instanceSkipReason_gcpNoApi': 'GCP has no public pricing API',
+      'instanceSkipReason_notInCatalog': 'provider not in catalog',
     },
   }
 

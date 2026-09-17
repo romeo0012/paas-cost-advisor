@@ -184,10 +184,20 @@ document.getElementById('refreshPricesBtn').addEventListener('click', async () =
   btn.disabled = true
   btn.textContent = i18n.t('loading')
   try {
-    const results = await api(`/api/admin/refresh-prices/${selectedId}`, { method: 'POST' })
+    const resp = await api(`/api/admin/refresh-prices/${selectedId}`, { method: 'POST' })
+    const results = resp.plans || []
     const ok = results.filter(r => r.priceCZK !== null).length
     const failed = results.filter(r => r.priceCZK === null)
-    toast(i18n.t('pricesRefreshed', ok, failed), failed.length > 0)
+    let msg = i18n.t('pricesRefreshed', ok, failed)
+    const inst = resp.instances
+    if (inst && inst.error) {
+      msg += ' ' + i18n.t('instancesFailed', inst.error)
+    } else if (inst && inst.skipped) {
+      msg += ' ' + i18n.t('instancesSkipped', i18n.t('instanceSkipReason_' + inst.reason))
+    } else if (inst) {
+      msg += ' ' + i18n.t('instancesRefreshed', inst.updated, inst.total)
+    }
+    toast(msg, failed.length > 0 || !!(inst && inst.error))
     await loadProviders()
   } catch (e) { toast(e.message, true) }
   btn.disabled = false
