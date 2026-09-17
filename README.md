@@ -105,10 +105,14 @@ ram  = "E2 Instance Ram running in <region>"   (USD za GiB / h)
 
 Shared-core typy se účtují jen zlomkem vCPU (RAM celá): `e2-micro` = **0,25** vCPU, `e2-small` = **0,5** vCPU, `e2-medium` = **1,0** vCPU. Ostatní e2 typy používají plný `vcpu` z katalogu. Příklad (region `us-central1`): `e2-standard-2` = 2 × core + 8 × ram.
 
+### Předpoklady k instancím
+
+**Měsíční cena = hodinová cena × 730 h.** Všechny instance: **Linux, on-demand, bez DPH, bez disků (jen compute), bez veřejné IP, bez datového přenosu**. Ceny se liší **OS a regionem** (uvedené regiony: AWS `us-east-1`, GCP `us-central1`, Azure `eastus`). AWS účtuje EC2 po instance-hours a samostatně **EBS, veřejné IPv4 adresy a datový přenos** ([AWS EC2 pricing](https://aws.amazon.com/ec2/pricing/on-demand/)); Azure má samostatný ceník **Managed Disks** ([Azure Managed Disks pricing](https://azure.microsoft.com/en-us/pricing/details/managed-disks/)). Tabulky jsou tedy **orientační kalkulace compute + raw storage**, ne oficiální nabídka.
+
 ### AWS – us-east-1
 
 | Instance | vCPU | RAM (GiB) | USD/h |
-|---|---|---|---|
+|---|---:|---:|---:|
 | t3.micro | 2 | 1 | 0,0096 |
 | t3.small | 2 | 2 | 0,0208 |
 | t3.medium | 2 | 4 | 0,0416 |
@@ -135,7 +139,7 @@ Shared-core typy se účtují jen zlomkem vCPU (RAM celá): `e2-micro` = **0,25*
 ### GCP – us-central1
 
 | Instance | vCPU | RAM (GiB) | USD/h |
-|---|---|---|---|
+|---|---:|---:|---:|
 | e2-micro | 1 | 1 | 0,0085 |
 | e2-small | 2 | 2 | 0,0168 |
 | e2-medium | 2 | 4 | 0,0335 |
@@ -155,7 +159,7 @@ Shared-core typy se účtují jen zlomkem vCPU (RAM celá): `e2-micro` = **0,25*
 ### Azure – eastus
 
 | Instance | vCPU | RAM (GiB) | USD/h |
-|---|---|---|---|
+|---|---:|---:|---:|
 | B1s | 1 | 1 | 0,0126 |
 | B1ms | 1 | 2 | 0,0252 |
 | B2s | 2 | 4 | 0,0504 |
@@ -176,13 +180,17 @@ Shared-core typy se účtují jen zlomkem vCPU (RAM celá): `e2-micro` = **0,25*
 | E8as_v5 | 8 | 64 | 0,5040 |
 | E16as_v5 | 16 | 128 | 1,0080 |
 
-### Storage (USD/GB/měs)
+### Storage disků (Kč/GB/měs bez DPH, kurz 1 USD = 23 Kč)
 
 | Provider | Super Fast | Fast | Standard | Basic |
-|---|---|---|---|---|
-| AWS | 0,08 | 0,08 | 0,08 | 0,10 |
-| GCP | 0,17 | 0,17 | 0,17 | 0,04 |
-| Azure | 0,08 | 0,08 | 0,08 | 0,04 |
+|---|---:|---:|---:|---:|
+| AWS | 1,84 | 1,84 | 1,84 | 2,30 |
+| GCP | 3,91 | 3,91 | 3,91 | 0,92 |
+| Azure | 1,84 | 1,84 | 1,84 | 0,92 |
+
+Reálné diskové typy (mapování vnitřních tierů): **AWS** `gp3` (Super Fast, Fast, Standard) a `gp2` (Basic); **GCP** `pd-ssd` (Super Fast, Fast, Standard) a `pd-standard` (Basic); **Azure** `Premium SSD` (Super Fast, Fast), `Standard SSD` (Standard), `Standard HDD` (Basic).
+
+Ceny storage **nejsou přímo srovnatelné napříč cloudy**: AWS může účtovat také **IOPS a throughput**, Azure účtuje **předdefinované velikosti disků** (ne přesně za každý GB), GCP rozlišuje **typ disku, region a provisionovanou kapacitu**. Nezahrnuto: snapshoty, zálohy, I/O operace, veřejné IP, datový přenos ani DPH. Kurz viz „Převod měn“.
 
 ## API
 
