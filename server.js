@@ -62,9 +62,6 @@ app.get(p('/api/catalog'), (_req, res) => {
       cpu: bc.RATES.cpu,
       ram: bc.RATES.ram,
       diskTiers: bc.DISK_TIERS,
-      publicIpRateCZK: bc.PUBLIC_IP_RATE_CZK,
-      remoteBackupRateCZK: bc.REMOTE_BACKUP_RATE_CZK,
-      remoteBackupMultiplier: bc.REMOTE_BACKUP_MULTIPLIER,
     },
   })
 })

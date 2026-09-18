@@ -27,13 +27,10 @@ Cena se počítá za celou architekturu jako sdílený pool (ne per-VM):
 celkem = Σ CPU GHz × sazba CPU
        + Σ RAM GB × sazba RAM
        + Σ disk GB × sazba podle tieru daného VM
-       + 2 × Σ disk GB × sazba zálohy
-       + public IP (jen když je v topologii opnsense)
 ```
 
 - **CPU se účtuje za celkové GHz zaokrouhlené NAHORU** na celé číslo (např. 36,8 → 37). Per-node řádky zůstávají přesné.
-- **Remote backup** = 0,68 Kč/GB/měs, vždy na **2× celkový disk**.
-- **Public IP** = 108 Kč/měs, jen pokud topologie obsahuje firewall ve skupině `opnsense`.
+- Remote backup a public IP se v tomto modelu **neúčtují**.
 - Každé VM má vlastní **disk tier** (Super Fast / Fast / Standard / Basic).
 
 Sazby podle délky závazku (`lib/businesscloud.js`):
@@ -45,7 +42,7 @@ Sazby podle délky závazku (`lib/businesscloud.js`):
 | 24 měsíců | 102,69 | 44,68 | 2,98 | 1,70 | 1,28 | 0,85 |
 | 36 měsíců | 96,65 | 42,05 | 2,80 | 1,60 | 1,20 | 0,80 |
 
-Disk = Kč/GB/měs. Env override (platí **jen pro závazek 12**): `IaaS_CPU_RATE_CZK_GHZ`, `IaaS_RAM_RATE_CZK_GB`, `IaaS_DISK_RATE_CZK_GB`, `IaaS_PUBLIC_IP_RATE_CZK`, `IaaS_REMOTE_BACKUP_RATE_CZK`.
+Disk = Kč/GB/měs. Env override (platí **jen pro závazek 12**): `IaaS_CPU_RATE_CZK_GHZ`, `IaaS_RAM_RATE_CZK_GB`, `IaaS_DISK_RATE_CZK_GB`.
 
 ### AWS / GCP / Azure – IaaS (per-VM matching)
 

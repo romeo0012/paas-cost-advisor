@@ -309,7 +309,6 @@ async function loadMethodology() {
 
 function renderMethodology() {
   const rateEl = document.getElementById('bcRateTable')
-  const extraEl = document.getElementById('bcPoolExtra')
   const instEl = document.getElementById('instanceTables')
   if (!methodologyData || !rateEl || !instEl) return
   const t = i18n.t
@@ -337,10 +336,6 @@ function renderMethodology() {
     <td>${tierRate('standard', cm) != null ? money(tierRate('standard', cm)) : ''}</td>
     <td>${tierRate('basic', cm) != null ? money(tierRate('basic', cm)) : ''}</td>
   </tr>`).join('')}</tbody></table>`
-
-  extraEl.textContent = t('bcPoolExtra',
-    formatMoney(convertMoney(bc.remoteBackupRateCZK, 'CZK', cur), cur, 2),
-    formatMoney(convertMoney(bc.publicIpRateCZK, 'CZK', cur), cur, 0))
 
   const providers = methodologyData.providers
   const storageRows = Object.entries(methodologyData.storage).map(([pid, s]) => {

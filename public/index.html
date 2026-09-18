@@ -102,9 +102,8 @@
         <h4 data-i18n="methodology">Metodika</h4>
 
         <h5 data-i18n="bcPoolTitle">Business Cloud (T-Cloud) – IaaS Resource Pool</h5>
-        <p data-i18n="bcPoolText">Cena za celou architekturu jako sdílený pool (ne per-VM). Celkem = Σ CPU GHz × sazba + Σ RAM GB × sazba + Σ disk GB × sazba tieru + 2× disk × záloha + public IP. CPU se účtuje za celková GHz zaokrouhlená nahoru.</p>
+        <p data-i18n="bcPoolText">Cena za celou architekturu jako sdílený pool (ne per-VM). Celkem = Σ CPU GHz × sazba + Σ RAM GB × sazba + Σ disk GB × sazba tieru. CPU se účtuje za celková GHz zaokrouhlená nahoru.</p>
         <div id="bcRateTable"></div>
-        <p id="bcPoolExtra"></p>
 
         <h5 data-i18n="hsMatchingTitle">AWS / GCP / Azure – IaaS matching</h5>
         <p data-i18n="hsMatchingText">Pro každé VM se vybere nejlevnější instance splňující vCPU i RAM: vCPU = max(1, ceil(cpuGHz / 2,6)), RAM = max(1, ceil(ramGB)); cena = měsíční cena instance + diskGB × storage sazba.</p>
