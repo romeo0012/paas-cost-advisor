@@ -72,7 +72,8 @@ app.post(p('/api/topology/price'), (req, res) => {
     const utilizationPct = req.body.utilizationPct != null
       ? Number(req.body.utilizationPct)
       : (Number(process.env.PAAS_UTILIZATION) || 40)
-    const result = require('./lib/topology').priceTopology(req.body.topology != null ? req.body.topology : req.body, currency, utilizationPct)
+    const commitmentMonths = req.body.commitmentMonths != null ? Number(req.body.commitmentMonths) : null
+    const result = require('./lib/topology').priceTopology(req.body.topology != null ? req.body.topology : req.body, currency, utilizationPct, commitmentMonths)
     res.json(result)
   } catch (e) {
     res.status(400).json({ error: e.message })

@@ -32,6 +32,7 @@ celkem = Σ CPU GHz × sazba CPU
 - **CPU se účtuje za celkové GHz zaokrouhlené NAHORU** na celé číslo (např. 36,8 → 37). Per-node řádky zůstávají přesné.
 - Remote backup a public IP se v tomto modelu **neúčtují**.
 - Každé VM má vlastní **disk tier** (Super Fast / Fast / Standard / Basic).
+- Délka závazku se volí v UI (**„Závazek"**, výchozí **36 měsíců**) a přebíjí hodnotu z nahrané topologie.
 
 Sazby podle délky závazku (`lib/businesscloud.js`):
 

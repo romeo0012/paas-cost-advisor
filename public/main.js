@@ -183,10 +183,11 @@ async function priceTopology(topology) {
   lastTopologyInput = topology
   const currency = document.getElementById('currency').value
   const utilizationPct = Number(document.getElementById('utilization').value) || DEFAULT_UTILIZATION
+  const commitmentMonths = Number(document.getElementById('commitment').value)
   const res = await fetch(BP + '/api/topology/price', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topology, currency, utilizationPct }),
+    body: JSON.stringify({ topology, currency, utilizationPct, commitmentMonths }),
   })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
@@ -449,6 +450,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('utilization').value = String(DEFAULT_UTILIZATION)
   document.getElementById('utilization').addEventListener('change', () => {
     fetchAdvice()
+    if (lastTopologyResult) priceTopology(lastTopologyInput).catch(() => {})
+  })
+  document.getElementById('commitment').addEventListener('change', () => {
     if (lastTopologyResult) priceTopology(lastTopologyInput).catch(() => {})
   })
   document.getElementById('currency').addEventListener('change', () => {

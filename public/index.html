@@ -37,6 +37,14 @@
           <option value="100" selected>100 %</option>
         </select>
       </label>
+      <label><span data-i18n="commitmentLabel">Závazek:</span>
+        <select id="commitment">
+          <option value="0" data-i18n="noCommitment">bez závazku</option>
+          <option value="12">12 m.</option>
+          <option value="24">24 m.</option>
+          <option value="36" selected>36 m.</option>
+        </select>
+      </label>
       <button onclick="fetchAdvice()" data-i18n="compare">Porovnat</button>
     </section>
 
