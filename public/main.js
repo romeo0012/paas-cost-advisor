@@ -34,9 +34,11 @@ function formatPrice(amount, currency) {
 
 function getRates() {
   const rateCZK = parseFloat(document.getElementById('rateCZK').value)
-  const rateEUR = parseFloat(document.getElementById('rateEUR').value)
+  const rateEURCZK = parseFloat(document.getElementById('rateEURCZK').value)
   const base = (methodologyData && methodologyData.rates) || { USD: 1, CZK: 23, EUR: 0.92 }
-  return { USD: 1, CZK: Number.isFinite(rateCZK) && rateCZK > 0 ? rateCZK : base.CZK, EUR: Number.isFinite(rateEUR) && rateEUR > 0 ? rateEUR : base.EUR }
+  const usdCzk = Number.isFinite(rateCZK) && rateCZK > 0 ? rateCZK : base.CZK
+  const eurCzk = Number.isFinite(rateEURCZK) && rateEURCZK > 0 ? rateEURCZK : base.CZK / base.EUR
+  return { USD: 1, CZK: usdCzk, EUR: usdCzk / eurCzk }
 }
 
 function convertMoney(amount, from, to) {
@@ -314,7 +316,7 @@ async function loadMethodology() {
   }
   const r = methodologyData.rates || {}
   if (r.CZK) document.getElementById('rateCZK').value = r.CZK
-  if (r.EUR) document.getElementById('rateEUR').value = r.EUR
+  if (r.CZK && r.EUR) document.getElementById('rateEURCZK').value = (r.CZK / r.EUR).toFixed(2)
   renderMethodology()
 }
 
@@ -471,7 +473,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (lastTopologyResult) priceTopology(lastTopologyInput).catch(() => {})
   }
   document.getElementById('rateCZK').addEventListener('change', rerates)
-  document.getElementById('rateEUR').addEventListener('change', rerates)
+  document.getElementById('rateEURCZK').addEventListener('change', rerates)
   document.getElementById('currency').addEventListener('change', () => {
     renderMethodology()
     if (lastTopologyResult) {
