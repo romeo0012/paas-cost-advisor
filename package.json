@@ -1,7 +1,7 @@
 {
   "name": "paas-cost-advisor",
   "version": "1.0.0",
-  "description": "PaaS cost advisor - compare pricing across AWS, GCP, Azure, and T-Cloud",
+  "description": "PaaS cost advisor - compare pricing across AWS, GCP, Azure, and Business Cloud",
   "main": "server.js",
   "scripts": {
     "build": "echo \"No build step required\"; exit 0",

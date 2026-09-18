@@ -213,54 +213,54 @@
     ]
   },
   "tcloud": {
-    "name": "T-Cloud",
+    "name": "Business Cloud",
     "region": "Czech Republic",
     "pricingSource": "manual",
     "plans": [
       {
-        "name": "T-Cloud IaaS (Start)",
+        "name": "Business Cloud IaaS (Start)",
         "tierId": "iaas-start",
         "pricePerMonth": 157,
         "currency": "CZK"
       },
       {
-        "name": "T-Cloud IaaS (Standard)",
+        "name": "Business Cloud IaaS (Standard)",
         "tierId": "iaas-standard",
         "pricePerMonth": 597,
         "currency": "CZK"
       },
       {
-        "name": "T-Cloud IaaS (Premium)",
+        "name": "Business Cloud IaaS (Premium)",
         "tierId": "iaas-premium",
         "pricePerMonth": 795,
         "currency": "CZK"
       },
       {
-        "name": "T-Cloud IaaS (Enterprise)",
+        "name": "Business Cloud IaaS (Enterprise)",
         "tierId": "iaas-enterprise",
         "pricePerMonth": 1590,
         "currency": "CZK"
       },
       {
-        "name": "T-Cloud PaaS (Start)",
+        "name": "Business Cloud PaaS (Start)",
         "tierId": "paas-start",
         "pricePerMonth": 1059,
         "currency": "CZK"
       },
       {
-        "name": "T-Cloud PaaS (Standard)",
+        "name": "Business Cloud PaaS (Standard)",
         "tierId": "paas-standard",
         "pricePerMonth": 4516,
         "currency": "CZK"
       },
       {
-        "name": "T-Cloud PaaS (Premium)",
+        "name": "Business Cloud PaaS (Premium)",
         "tierId": "paas-premium",
         "pricePerMonth": 8922,
         "currency": "CZK"
       },
       {
-        "name": "T-Cloud PaaS (Enterprise)",
+        "name": "Business Cloud PaaS (Enterprise)",
         "tierId": "paas-enterprise",
         "pricePerMonth": 17476,
         "currency": "CZK"

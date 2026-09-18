@@ -1,10 +1,10 @@
 # PaaS Cost Advisor
 
-Porovnává měsíční ceny PaaS/IaaS variant mezi **AWS**, **GCP**, **Azure** a **T-Cloud (Business Cloud)**.
+Porovnává měsíční ceny PaaS/IaaS variant mezi **AWS**, **GCP**, **Azure** a **Business Cloud**.
 Dvě režimy:
 
 1. **Ceníkové tiery** – Start / Standard / Premium / Enterprise pro IaaS i PaaS (data v `data/providers.json`, `data/tiers.json`).
-2. **Porovnání podle topologie** – nahraj JSON topologie (export z `iaas-api-mgmt`) a nástroj ocení každé VM zvlášť proti Business Cloud Resource Poolu a proti nejlevnějším instancím AWS/GCP/Azure (+ PaaS varianty EB / App Engine / App Service / T-Cloud PaaS).
+2. **Porovnání podle topologie** – nahraj JSON topologie (export z `iaas-api-mgmt`) a nástroj ocení každé VM zvlášť proti Business Cloud Resource Poolu a proti nejlevnějším instancím AWS/GCP/Azure (+ PaaS varianty EB / App Engine / App Service / Business Cloud PaaS).
 
 ## Spuštění
 
@@ -19,7 +19,7 @@ npm ci && npm start
 
 Základní měna je USD. Kurzy v `lib/currency.js`: **1 USD = 23 CZK**, **1 USD = 0,92 EUR**. Všechny ceny se zobrazují ve zvolené měně.
 
-### Business Cloud (T-Cloud) – IaaS Resource Pool
+### Business Cloud – IaaS Resource Pool
 
 Cena se počítá za celou architekturu jako sdílený pool (ne per-VM):
 
@@ -57,7 +57,7 @@ cena = usdPerHour × 730 h + diskGB × sazba storage[provider][diskTier]
 Sazby storage (USD/GB/měs): AWS 0,08 (basic 0,10), GCP 0,17 (basic 0,04), Azure 0,08 (basic 0,04).
 Hodnoty drží `data/instances.json` (`hoursPerMonth: 730`).
 
-### PaaS varianty (Elastic Beanstalk / App Engine / App Service / T-Cloud PaaS)
+### PaaS varianty (Elastic Beanstalk / App Engine / App Service / Business Cloud PaaS)
 
 Pro PaaS se každé VM namapuje na nejmenší tier (`data/tiers.json`), který splní vCPU/RAM; když žádný nestačí, použije se největší plán × počet instancí.
 
@@ -70,7 +70,7 @@ Pro PaaS se každé VM namapuje na nejmenší tier (`data/tiers.json`), který s
 
 Cena = cena plánu daného poskytovatele z `data/providers.json` (např. `EB t3.xlarge + ALB`, `App Engine F4 730h`, `App Service B3 Windows`).
 
-- **T-Cloud PaaS se násobí využitím** (`utilizationPct / 100`, výchozí **40 %** dle `PAAS_UTILIZATION` / přepínače „Využití PaaS“).
+- **Business Cloud PaaS se násobí využitím** (`utilizationPct / 100`, výchozí **40 %** dle `PAAS_UTILIZATION` / přepínače „Využití PaaS“).
 - PaaS u AWS/GCP/Azure se v topologii počítá v plné ceně.
 
 ### Ceníkové tiery

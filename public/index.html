@@ -52,7 +52,7 @@
 
     <section class="topology-section">
       <h2 data-i18n="modeTopology">Porovnání podle topologie</h2>
-      <p class="topology-hint" data-i18n="topologyHint">Nahrajte export topologie (JSON) z iaas-api-mgmt — porovná ceny VM v T-Cloudu (Business Cloud), AWS, Azure a GCP.</p>
+      <p class="topology-hint" data-i18n="topologyHint">Nahrajte export topologie (JSON) z iaas-api-mgmt — porovná ceny VM v Business Cloudu, AWS, Azure a GCP.</p>
       <div class="controls topology-controls">
         <button id="ulTopoBtn" class="secondary" data-i18n="uploadTopology">Nahrát topologii ve formátu json</button>
         <input type="file" id="ulTopoFile" accept=".json,application/json" style="display:none">
@@ -84,8 +84,8 @@
           <td><span data-i18n="azurePaas">App Service Basic B1–B3 (Windows, pay-as-you-go)</span><br><a href="https://azure.microsoft.com/cs-cz/pricing/details/app-service/windows/" target="_blank">azure.microsoft.com/pricing/app-service</a></td>
         </tr>
         <tr>
-          <td><strong>T-Cloud</strong></td>
-          <td colspan="2"><span data-i18n="tcloudPrices">Ceny poskytnuté T-Mobile CZ (T-Cloud IaaS a PaaS ceník)</span></td>
+          <td><strong>Business Cloud</strong></td>
+          <td colspan="2"><span data-i18n="tcloudPrices">Ceny poskytnuté T-Mobile CZ (Business Cloud IaaS a PaaS ceník)</span></td>
         </tr>
       </table>
       <p class="method-note">
@@ -101,15 +101,15 @@
       <div class="methodology">
         <h4 data-i18n="methodology">Metodika</h4>
 
-        <h5 data-i18n="bcPoolTitle">Business Cloud (T-Cloud) – IaaS Resource Pool</h5>
+        <h5 data-i18n="bcPoolTitle">Business Cloud – IaaS Resource Pool</h5>
         <p data-i18n="bcPoolText">Cena za celou architekturu jako sdílený pool (ne per-VM). Celkem = Σ CPU GHz × sazba + Σ RAM GB × sazba + Σ disk GB × sazba tieru. CPU se účtuje za celková GHz zaokrouhlená nahoru.</p>
         <div id="bcRateTable"></div>
 
         <h5 data-i18n="hsMatchingTitle">AWS / GCP / Azure – IaaS matching</h5>
         <p data-i18n="hsMatchingText">Pro každé VM se vybere nejlevnější instance splňující vCPU i RAM: vCPU = max(1, ceil(cpuGHz / 2,6)), RAM = max(1, ceil(ramGB)); cena = měsíční cena instance + diskGB × storage sazba.</p>
 
-        <h5 data-i18n="paasMatchingTitle">PaaS varianty (Elastic Beanstalk / App Engine / App Service / T-Cloud PaaS)</h5>
-        <p data-i18n="paasMatchingText">VM se namapuje na nejmenší PaaS tier (1/2, 2/4, 4/8, 8/16 vCPU/RAM); T-Cloud PaaS se násobí využitím (výchozí 40 %).</p>
+        <h5 data-i18n="paasMatchingTitle">PaaS varianty (Elastic Beanstalk / App Engine / App Service / Business Cloud PaaS)</h5>
+        <p data-i18n="paasMatchingText">VM se namapuje na nejmenší PaaS tier (1/2, 2/4, 4/8, 8/16 vCPU/RAM); Business Cloud PaaS se násobí využitím (výchozí 40 %).</p>
 
         <h5 data-i18n="availableInstances">Dostupné instance</h5>
         <p data-i18n="availableInstancesText">On-demand ceny převedené na měsíc (730 h). Zdroj: data/instances.json.</p>

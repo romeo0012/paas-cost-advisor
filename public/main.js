@@ -338,6 +338,9 @@ function renderMethodology() {
   </tr>`).join('')}</tbody></table>`
 
   const providers = methodologyData.providers
+  const bcStorageRow = `<tr><td><strong>${esc(`${t('businessCloud')} (${cmLabel(12)})`)}</strong></td>${
+    ['superfast', 'fast', 'standard', 'basic'].map(tier => `<td>${money(bc.diskTiers[tier].rates[12])}</td>`).join('')
+  }</tr>`
   const storageRows = Object.entries(methodologyData.storage).map(([pid, s]) => {
     const name = providers[pid] ? providers[pid].name : pid
     const cell = (v) => formatMoney(convertMoney(v, 'USD', cur), cur, 2)
@@ -351,7 +354,7 @@ function renderMethodology() {
   }).join('')
 
   instEl.innerHTML = `<div class="inst-block"><h6>${t('storageRates', cur)}</h6>
-    <table class="rate-table"><thead><tr><th></th><th>Super Fast</th><th>Fast</th><th>Standard</th><th>Basic</th></tr></thead><tbody>${storageRows}</tbody></table></div>${tables}`
+    <table class="rate-table"><thead><tr><th></th><th>Super Fast</th><th>Fast</th><th>Standard</th><th>Basic</th></tr></thead><tbody>${bcStorageRow}${storageRows}</tbody></table></div>${tables}`
 }
 
 function updateTierSpecs(sel) {
