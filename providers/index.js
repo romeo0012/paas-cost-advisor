@@ -28,10 +28,10 @@ function mergeTierSpecs(plan) {
   return { ...plan, cpu: tier.cpu, ram: tier.ram, storage: tier.storage, note }
 }
 
-function convertPlans(plans, target) {
+function convertPlans(plans, target, rates) {
   return plans.map(p => ({
     ...p,
-    pricePerMonth: p.pricePerMonth ? convert(p.pricePerMonth, p.currency, target) : p.pricePerMonth,
+    pricePerMonth: p.pricePerMonth ? convert(p.pricePerMonth, p.currency, target, rates) : p.pricePerMonth,
     currency: target,
   }))
 }
@@ -60,6 +60,7 @@ function isPaasTier(tierId) {
 function getAdvice(requirements) {
   const db = loadData()
   const targetCurrency = requirements.currency || 'CZK'
+  const rates = requirements.rates != null ? requirements.rates : null
   const maxBudget = requirements.maxBudget || Infinity
   const utilizationPct = requirements.utilizationPct != null ? Number(requirements.utilizationPct) : (Number(process.env.PAAS_UTILIZATION) || 40)
   const utilFactor = utilizationPct / 100
@@ -77,7 +78,7 @@ function getAdvice(requirements) {
       }),
       recommendations: [],
     }
-    res.plans = addInstances(convertPlans(res.plans, targetCurrency), maxBudget)
+    res.plans = addInstances(convertPlans(res.plans, targetCurrency, rates), maxBudget)
     const filtered = res.plans.filter(p => p.maxInstances > 0)
     res.recommendations = filtered.length > 0 ? filtered : [{ message: 'No plans within budget', provider: res.provider }]
     results.push(res)

@@ -28,6 +28,16 @@
           <option value="CZK" selected>CZK</option>
         </select>
       </label>
+      <label class="rate-label"><span data-i18n="fxRate">Kurz měny:</span>
+        <span class="rate-row">
+          <span data-i18n="usdEq">1 USD =</span>
+          <input type="number" id="rateCZK" class="rate-input" value="23" step="0.01" min="0.01">
+          <span>CZK</span>
+          <span data-i18n="usdEq">1 USD =</span>
+          <input type="number" id="rateEUR" class="rate-input" value="0.92" step="0.01" min="0.01">
+          <span>EUR</span>
+        </span>
+      </label>
       <label><span data-i18n="utilization">Využití PaaS:</span>
         <select id="utilization">
           <option value="20">20 %</option>

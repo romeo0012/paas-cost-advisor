@@ -20,7 +20,7 @@ function fetchAdvice() {
   const utilization = document.getElementById('utilization').value
   lastBudget = budget ? Number(budget) : Infinity
   lastCurrency = currency
-  socket.emit('getAdvice', { maxBudget: lastBudget, currency, utilizationPct: Number(utilization) || DEFAULT_UTILIZATION }, (results) => {
+  socket.emit('getAdvice', { maxBudget: lastBudget, currency, utilizationPct: Number(utilization) || DEFAULT_UTILIZATION, rates: getRates() }, (results) => {
     renderResults(results, currency)
   })
 }
@@ -32,11 +32,18 @@ function formatPrice(amount, currency) {
   return `$${n}`
 }
 
+function getRates() {
+  const rateCZK = parseFloat(document.getElementById('rateCZK').value)
+  const rateEUR = parseFloat(document.getElementById('rateEUR').value)
+  const base = (methodologyData && methodologyData.rates) || { USD: 1, CZK: 23, EUR: 0.92 }
+  return { USD: 1, CZK: Number.isFinite(rateCZK) && rateCZK > 0 ? rateCZK : base.CZK, EUR: Number.isFinite(rateEUR) && rateEUR > 0 ? rateEUR : base.EUR }
+}
+
 function convertMoney(amount, from, to) {
   if (amount == null || from === to) return amount
-  const rates = (methodologyData && methodologyData.rates) || { USD: 1, CZK: 23, EUR: 0.92 }
-  const inUsd = from === 'USD' ? amount : amount / rates[from]
-  return to === 'USD' ? inUsd : inUsd * rates[to]
+  const rates = getRates()
+  const inUsd = from === 'USD' ? amount : amount / (rates[from] || 1)
+  return to === 'USD' ? inUsd : inUsd * (rates[to] || 1)
 }
 
 function formatMoney(amount, currency, decimals = 0) {
@@ -187,7 +194,7 @@ async function priceTopology(topology) {
   const res = await fetch(BP + '/api/topology/price', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topology, currency, utilizationPct, commitmentMonths }),
+    body: JSON.stringify({ topology, currency, utilizationPct, commitmentMonths, rates: getRates() }),
   })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
@@ -305,6 +312,9 @@ async function loadMethodology() {
   } catch (e) {
     return
   }
+  const r = methodologyData.rates || {}
+  if (r.CZK) document.getElementById('rateCZK').value = r.CZK
+  if (r.EUR) document.getElementById('rateEUR').value = r.EUR
   renderMethodology()
 }
 
@@ -455,6 +465,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('commitment').addEventListener('change', () => {
     if (lastTopologyResult) priceTopology(lastTopologyInput).catch(() => {})
   })
+  const rerates = () => {
+    renderMethodology()
+    fetchAdvice()
+    if (lastTopologyResult) priceTopology(lastTopologyInput).catch(() => {})
+  }
+  document.getElementById('rateCZK').addEventListener('change', rerates)
+  document.getElementById('rateEUR').addEventListener('change', rerates)
   document.getElementById('currency').addEventListener('change', () => {
     renderMethodology()
     if (lastTopologyResult) {

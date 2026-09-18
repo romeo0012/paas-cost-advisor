@@ -17,7 +17,7 @@ npm ci && npm start
 
 ### Převod měn
 
-Základní měna je USD. Kurzy v `lib/currency.js`: **1 USD = 23 CZK**, **1 USD = 0,92 EUR**. Všechny ceny se zobrazují ve zvolené měně.
+Základní měna je USD. Kurzy v `lib/currency.js`: **1 USD = 23 CZK**, **1 USD = 0,92 EUR**. Všechny ceny se zobrazují ve zvolené měně. Kurz lze v UI upravit v poli **„Kurz měny"** (1 USD = CZK / EUR) — hodnota se použije jak pro přepočet tabulek, tak pro ocenění topologie a ceníkových tierů (odesílá se v `rates` v `POST /api/advice` a `POST /api/topology/price`).
 
 ### Business Cloud – IaaS Resource Pool
 
