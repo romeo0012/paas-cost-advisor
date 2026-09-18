@@ -339,8 +339,8 @@ function renderMethodology() {
   </tr>`).join('')}</tbody></table>`
 
   const providers = methodologyData.providers
-  const bcStorageRow = `<tr><td><strong>${esc(`${t('businessCloud')} (${cmLabel(12)})`)}</strong></td>${
-    ['superfast', 'fast', 'standard', 'basic'].map(tier => `<td>${money(bc.diskTiers[tier].rates[12])}</td>`).join('')
+  const bcStorageRow = `<tr><td><strong>${esc(`${t('businessCloud')} (${cmLabel(36)})`)}</strong></td>${
+    ['superfast', 'fast', 'standard', 'basic'].map(tier => `<td>${money(bc.diskTiers[tier].rates[36])}</td>`).join('')
   }</tr>`
   const storageRows = Object.entries(methodologyData.storage).map(([pid, s]) => {
     const name = providers[pid] ? providers[pid].name : pid
