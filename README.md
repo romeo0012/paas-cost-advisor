@@ -99,8 +99,8 @@ Tlačítko **„🔄 Obnovit ceny z cloudu“** v adminu (`POST /api/admin/refre
 ```
 cena = účetní_vCPU × core  +  ramGiB × ram
 
-core = "E2 Instance Core running in <region>"  (USD za vCPU / h)
-ram  = "E2 Instance Ram running in <region>"   (USD za GiB / h)
+core = SKU "E2 Instance Core running in ..." s serviceRegions = <region>  (USD za vCPU / h)
+ram  = SKU "E2 Instance Ram running in ..."  s serviceRegions = <region>  (USD za GiB / h)
 ```
 
 Shared-core typy se účtují jen zlomkem vCPU (RAM celá): `e2-micro` = **0,25** vCPU, `e2-small` = **0,5** vCPU, `e2-medium` = **1,0** vCPU. Ostatní e2 typy používají plný `vcpu` z katalogu. Příklad (region `us-central1`): `e2-standard-2` = 2 × core + 8 × ram.
